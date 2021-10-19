@@ -1,0 +1,25 @@
+{
+  "name": "com.elselam.unavscreen",
+  "displaName": "UNavScreen",
+  "version": "0.0.1",
+  "unity": "2020.3",
+  "category": "Framework",
+  "description": "Framework for Unity screens navigation",
+  "type": "library",
+  "keywords": [
+    "navigation"
+  ],
+  "author": {
+    "name": "Victor",
+    "url": "https://github.com/dev-victorelselam"
+  },
+  "samples": [
+    {
+      "displayName": "Change Scene Sample",
+      "description": "Showcase how to create a navigation using screens and scene loading",
+      "path": "Samples~/ChangeSceneSample"
+    }
+  ],
+  "dependencies": {
+  }
+}
