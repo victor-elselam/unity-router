@@ -1,14 +1,18 @@
 using UnityEngine;
 
-namespace elselam.Navigation.Domain {
-    public abstract class BaseScreenPresenter : MonoBehaviour, IScreenPresenter {
+namespace Elselam.UnityRouter.Domain
+{
+    public abstract class BaseScreenPresenter : MonoBehaviour, IScreenPresenter
+    {
         public virtual Transform Transform => transform;
-        
-        public virtual void Enable() {
+
+        public virtual void Enable()
+        {
             gameObject.SetActive(true);
         }
 
-        public virtual void Disable() {
+        public virtual void Disable()
+        {
             gameObject.SetActive(false);
         }
     }

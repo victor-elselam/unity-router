@@ -1,9 +1,11 @@
 using Cysharp.Threading.Tasks;
+using Elselam.UnityRouter.Domain;
 using JetBrains.Annotations;
-using elselam.Navigation.Domain;
 
-namespace elselam.Navigation.Transitions {
-    public interface ITransition {
+namespace Elselam.UnityRouter.Transitions
+{
+    public interface ITransition
+    {
         UniTask Transite([CanBeNull] IScreenPresenter enterScreen, [CanBeNull] IScreenPresenter exitScreen);
     }
 }

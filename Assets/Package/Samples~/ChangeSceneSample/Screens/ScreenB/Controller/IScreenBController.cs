@@ -1,6 +1,8 @@
 
-namespace Sample.ChangeSceneSample.Screens.ScreenB.Controller {
-    public interface IScreenBController {
-        
+namespace Sample.ChangeSceneSample.Screens.ScreenB.Controller
+{
+    public interface IScreenBController
+    {
+
     }
 }

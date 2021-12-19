@@ -1,17 +1,21 @@
-using elselam.Navigation.Navigation;
+using Elselam.UnityRouter.Installers;
 using UnityEngine;
 using Zenject;
 
-namespace Sample.ChangeSceneSample.Scripts {
-    public class ChangeSceneAppStart : MonoBehaviour {
+namespace Sample.ChangeSceneSample.Scripts
+{
+    public class ChangeSceneAppStart : MonoBehaviour
+    {
         private INavigation navigation;
 
         [Inject]
-        public void Construct(INavigation navigation) {
+        public void Construct(INavigation navigation)
+        {
             this.navigation = navigation;
         }
 
-        private void Start() {
+        private void Start()
+        {
             navigation.Initialize();
         }
     }

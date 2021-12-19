@@ -1,21 +1,25 @@
-using elselam.Navigation.History;
+using Elselam.UnityRouter.History;
 using FluentAssertions;
 using NUnit.Framework;
 using Zenject;
 
 
-namespace elselam.Navigation.Tests {
+namespace Elselam.UnityRouter.Tests
+{
     [TestFixture]
-    public class HistoryTests : ZenjectUnitTestFixture {
+    public class HistoryTests : ZenjectUnitTestFixture
+    {
         [SetUp]
-        public void Binding() {
+        public void Binding()
+        {
             Container.Bind<IHistory>()
                 .To<HistoryManager>()
                 .AsSingle();
         }
-        
+
         [Test]
-        public void Add_ValidScreenScheme_ReturnSuccess() {
+        public void Add_ValidScreenScheme_ReturnSuccess()
+        {
             var added = false;
             var scheme = new ScreenScheme("://domain.com/MockScreenA", "MockScreenA");
             var history = Container.Resolve<IHistory>();
@@ -24,9 +28,10 @@ namespace elselam.Navigation.Tests {
 
             added.Should().BeTrue();
         }
-        
+
         [Test]
-        public void Add_NullScreenScheme_ReturnFail() {
+        public void Add_NullScreenScheme_ReturnFail()
+        {
             var added = false;
             ScreenScheme scheme = null;
             var history = Container.Resolve<IHistory>();
@@ -40,7 +45,8 @@ namespace elselam.Navigation.Tests {
         [TestCase("MockScreenA", "MockScreenB", "MockScreenC")]
         [TestCase("MockScreenB", "MockScreenC", "MockScreenD")]
         [TestCase("MockScreenC", "MockScreenD", "MockScreenA")]
-        public void Back_ThreeTimes_CheckScreenSuccess(string screen1, string screen2, string screen3) {
+        public void Back_ThreeTimes_CheckScreenSuccess(string screen1, string screen2, string screen3)
+        {
             ScreenScheme scheme = null;
             var history = Container.Resolve<IHistory>();
             history.Add(new ScreenScheme("", screen1));
@@ -53,9 +59,10 @@ namespace elselam.Navigation.Tests {
 
             scheme.ScreenId.Should().Be(screen1);
         }
-        
+
         [Test]
-        public void Back_ThreeTimesFails_ReturnNull() {
+        public void Back_ThreeTimesFails_ReturnNull()
+        {
             var history = Container.Resolve<IHistory>();
             var scheme1 = new ScreenScheme("", "MockScreenA");
             var scheme2 = new ScreenScheme("", "MockScreenB");

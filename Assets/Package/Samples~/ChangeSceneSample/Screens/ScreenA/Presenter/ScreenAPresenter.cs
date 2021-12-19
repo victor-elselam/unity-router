@@ -1,8 +1,9 @@
-using elselam.Navigation.Domain;
+using Elselam.UnityRouter.Domain;
 
-namespace Sample.ChangeSceneSample.Screens.ScreenA.Presenter {
+namespace Sample.ChangeSceneSample.Screens.ScreenA.Presenter
+{
     public class ScreenAPresenter : BaseCanvasScreenPresenter, IScreenAPresenter
     {
-    
+
     }
 }
