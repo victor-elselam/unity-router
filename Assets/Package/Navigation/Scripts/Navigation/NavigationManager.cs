@@ -55,7 +55,7 @@ namespace Elselam.UnityRouter.Installers
             {
                 screenModels[screenRegistry.ScreenId] = screenFactory.Create(screenRegistry);
             }
-            NavigateTo(screenResolver.ResolveScheme());
+            NavigateTo(screenResolver.ResolveScheme(), null, false);
         }
 
         public void NavigateTo<TScreen>(ITransition transition = null, IDictionary<string, string> parameters = null) where TScreen : IScreenInteractor
@@ -116,7 +116,12 @@ namespace Elselam.UnityRouter.Installers
             }
         }
 
-        public void NavigateTo(ScreenScheme enterScheme, ITransition transition = null, bool back = false)
+        public void NavigateTo(ScreenScheme enterScheme, ITransition transition = null)
+        {
+            NavigateTo(enterScheme, transition, false);
+        }
+
+        private void NavigateTo(ScreenScheme enterScheme, ITransition transition = null, bool back = false)
         {
             if (loading) //safe guard to avoid concurrent loadings
                 return;
