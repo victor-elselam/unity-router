@@ -5,11 +5,11 @@ You can control the navigation for your game or app using prefabs, scenes or bot
 
 # Install
 
-- In the Unity package manager window, you can add package from git url like "https://github.com/dev-victorelselam/unity-router.git?path=/Assets/Package"
+- In the Unity package manager window, you can add package from git url like "https://github.com/victor-elselam/unity-router.git?path=/Assets/Package"
 
 or 
 
-- (Work in progress)Using subtree "upm" with https://github.com/mob-sakai/UpmGitExtension. Add "https://github.com/dev-victorelselam/unity-router.git" and select releases 
+- (Work in progress)Using subtree "upm" with https://github.com/mob-sakai/UpmGitExtension. Add "https://github.com/victor-elselam/unity-router.git" and select releases 
 
 
 # Get Started
