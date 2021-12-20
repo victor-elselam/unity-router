@@ -1,7 +1,7 @@
 ﻿namespace Elselam.UnityRouter.Installers
 {
-    public interface IScreenFactory<T, T2>
+    public interface IScreenFactory
     {
-        T2 Create(T t);
+        IScreenModel Create(IScreenRegistry t);
     }
 }

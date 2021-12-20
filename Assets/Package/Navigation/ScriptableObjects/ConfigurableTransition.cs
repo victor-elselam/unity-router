@@ -1,5 +1,4 @@
-﻿
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using Elselam.UnityRouter.Domain;
 using Elselam.UnityRouter.Transitions;
 using JetBrains.Annotations;

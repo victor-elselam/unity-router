@@ -1,4 +1,3 @@
-
 using Elselam.UnityRouter.Domain;
 
 namespace Elselam.UnityRouter.Installers
@@ -9,14 +8,14 @@ namespace Elselam.UnityRouter.Installers
         public string ScreenId { get; }
         public IScreenInteractor Interactor { get; }
         public IScreenPresenter Presenter { get; }
-        public IScreenView ViewController { get; }
+        public IScreenView View { get; }
 
-        public ScreenModel(string screenId, IScreenInteractor interactor, IScreenPresenter presenter, IScreenView viewController)
+        public ScreenModel(string screenId, IScreenInteractor interactor, IScreenPresenter presenter, IScreenView view)
         {
             ScreenId = screenId;
             Interactor = interactor;
             Presenter = presenter;
-            ViewController = viewController;
+            View = view;
         }
     }
 }

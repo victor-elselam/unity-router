@@ -1,4 +1,3 @@
-
 using Elselam.UnityRouter.History;
 
 namespace Elselam.UnityRouter.Installers
@@ -12,7 +11,7 @@ namespace Elselam.UnityRouter.Installers
         ScreenScheme ResolveScheme();
 
         /// <summary>
-        /// 
+        /// TODO: Remove this from interface and mock the event
         /// </summary>
         /// <param name="deepLinkUrl"></param>
         void ApplicationOnDeepLinkActivated(string deepLinkUrl);

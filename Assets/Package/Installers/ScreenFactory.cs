@@ -3,7 +3,7 @@ using Zenject;
 
 namespace Elselam.UnityRouter.Installers
 {
-    public class ScreenFactory : IScreenFactory<IScreenRegistry, IScreenModel>
+    public class ScreenFactory : IScreenFactory
     {
         private readonly DiContainer container;
 
@@ -17,7 +17,7 @@ namespace Elselam.UnityRouter.Installers
             return new ScreenModel(screenRegistry.ScreenId,
                 (IScreenInteractor)container.Resolve(screenRegistry.ScreenInteractor),
                 (IScreenPresenter)container.Resolve(screenRegistry.ScreenPresenter),
-                (IScreenView)container.Resolve(screenRegistry.ScreenController));
+                (IScreenView)container.Resolve(screenRegistry.ScreenView));
         }
     }
 }

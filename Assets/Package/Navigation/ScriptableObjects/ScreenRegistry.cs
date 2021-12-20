@@ -22,14 +22,14 @@ namespace Elselam.UnityRouter.Installers
         [SerializeField] private string presenterTypeName;
         private Type presenterType;
 
-        [SerializeField] private Object controller;
-        [SerializeField] private string controllerTypeName;
-        private Type controllerType;
+        [SerializeField] private Object view;
+        [SerializeField] private string viewTypeName;
+        private Type viewType;
 
         public string ScreenId => screenId;
         public Type ScreenPresenter => presenterType ??= TypeExtensions.GetTypeByName(presenterTypeName);
         public Type ScreenInteractor => interactorType ??= TypeExtensions.GetTypeByName(interactorTypeName);
-        public Type ScreenController => controllerType ??= TypeExtensions.GetTypeByName(controllerTypeName);
+        public Type ScreenView => viewType ??= TypeExtensions.GetTypeByName(viewTypeName);
         public BaseScreenPresenter ScreenPrefab => presenter;
     }
 }

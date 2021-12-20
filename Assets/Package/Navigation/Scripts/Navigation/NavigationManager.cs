@@ -21,7 +21,7 @@ namespace Elselam.UnityRouter.Installers
         private readonly ISceneLoader sceneLoader;
         private readonly IScreenResolver screenResolver;
         private readonly List<IScreenRegistry> screenRegistries;
-        private readonly IScreenFactory<IScreenRegistry, IScreenModel> screenFactory;
+        private readonly IScreenFactory screenFactory;
         private bool loading;
         private readonly Dictionary<string, IScreenModel> screenModels;
 
@@ -29,7 +29,7 @@ namespace Elselam.UnityRouter.Installers
 
         [Inject]
         public NavigationManager(List<IScreenRegistry> screenRegistries,
-            IScreenFactory<IScreenRegistry, IScreenModel> screenFactory,
+            IScreenFactory screenFactory,
             IScreenResolver screenResolver,
             ISceneLoader sceneLoader,
             IUrlManager urlManager,
