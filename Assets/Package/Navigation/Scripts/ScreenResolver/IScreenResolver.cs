@@ -1,8 +1,10 @@
 
-using elselam.Navigation.History;
+using Elselam.UnityRouter.History;
 
-namespace elselam.Navigation.Navigation {
-    public interface IScreenResolver {
+namespace Elselam.UnityRouter.Installers
+{
+    public interface IScreenResolver
+    {
         ScreenScheme ResolveScheme();
         void ApplicationOnDeepLinkActivated(string deepLinkUrl);
         void Initialize();

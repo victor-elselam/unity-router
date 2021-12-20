@@ -1,9 +1,11 @@
-using System;
 using Cysharp.Threading.Tasks;
+using System;
 using Zenject;
 
-namespace elselam.Navigation.SceneLoad {
-    public interface ISceneLoader {
+namespace Elselam.UnityRouter.SceneLoad
+{
+    public interface ISceneLoader
+    {
 
         UniTask LoadLoadingScene();
         UniTask UnloadLoadingScene();

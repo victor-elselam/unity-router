@@ -1,11 +1,13 @@
 
-using elselam.Navigation.Domain;
-using elselam.Navigation.History;
+using Elselam.UnityRouter.Domain;
+using Elselam.UnityRouter.History;
 
-namespace elselam.Navigation.Navigation {
-    public interface ICurrentScreen {
+namespace Elselam.UnityRouter.Installers
+{
+    public interface ICurrentScreen
+    {
         IScreenInteractor Screen { get; }
         ScreenScheme Scheme { get; }
-        void SetCurrentScreen(IScreenInteractor screenController, ScreenScheme scheme); 
+        void SetCurrentScreen(IScreenInteractor screenController, ScreenScheme scheme);
     }
 }

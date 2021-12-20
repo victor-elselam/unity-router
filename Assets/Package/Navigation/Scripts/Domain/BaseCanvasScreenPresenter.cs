@@ -1,7 +1,9 @@
 using UnityEngine;
 
-namespace elselam.Navigation.Domain {
-    public abstract class BaseCanvasScreenPresenter : BaseScreenPresenter {
+namespace Elselam.UnityRouter.Domain
+{
+    public abstract class BaseCanvasScreenPresenter : BaseScreenPresenter
+    {
         [SerializeField] private Transform container;
         public override Transform Transform => container;
     }

@@ -1,23 +1,24 @@
-using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
-using elselam.Navigation.Domain;
-using elselam.Navigation.History;
-using elselam.Navigation.Installers;
-using elselam.Navigation.Navigation;
-using elselam.Navigation.SceneLoad;
-using elselam.Navigation.ScriptableObjects;
-using elselam.Navigation.Transitions;
-using elselam.Navigation.Url;
+using Elselam.UnityRouter.Domain;
+using Elselam.UnityRouter.History;
+using Elselam.UnityRouter.Installers;
+using Elselam.UnityRouter.Installers;
+using Elselam.UnityRouter.SceneLoad;
+using Elselam.UnityRouter.Transitions;
+using Elselam.UnityRouter.Url;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
-namespace elselam.Navigation.Tests {
+namespace Elselam.UnityRouter.Tests
+{
     [TestFixture]
-    public class NavigationTests : ZenjectUnitTestFixture {
+    public class NavigationTests : ZenjectUnitTestFixture
+    {
 
         private List<ScreenScheme> historyList;
         private ISceneLoader sceneLoader;
@@ -26,12 +27,14 @@ namespace elselam.Navigation.Tests {
         private INavigation navigation;
 
         [SetUp]
-        public void Binding() {
+        public void Binding()
+        {
             string appDomain = "domain://";
 
             historyList = new List<ScreenScheme>();
             Container.Bind<IHistory>()
-                .FromMethod(_ => {
+                .FromMethod(_ =>
+                {
                     var history = Substitute.For<IHistory>();
                     history.When(h => h.Add(Arg.Any<ScreenScheme>()))
                         .Do(callInfo => historyList.Add(callInfo.Arg<ScreenScheme>()));
@@ -40,22 +43,35 @@ namespace elselam.Navigation.Tests {
                 })
                 .AsSingle();
 
-            Container.BindFactory<IScreenRegistry, IScreenModel, ScreenFactory>().FromMethod((container, registry) 
-                => Container.ResolveId<IScreenModel>(registry.ScreenId));
+            Container.Bind<IScreenFactory<IScreenRegistry, IScreenModel>>()
+                .FromMethod(_ =>
+                {
+                    var screenFactory = Substitute.For<IScreenFactory<IScreenRegistry, IScreenModel>>();
+                    screenFactory
+                        .Create(Arg.Any<IScreenRegistry>())
+                        .Returns(info => Container.ResolveId<IScreenModel>(info.Arg<IScreenRegistry>().ScreenId));
+                    return screenFactory;
+                })
+                .AsSingle();
+
+            //Container.BindFactory<IScreenRegistry, IScreenModel, ScreenFactory>().FromMethod((container, registry)
+            //    => Container.ResolveId<IScreenModel>(registry.ScreenId));
 
             Container.Bind<ISceneLoader>()
                 .FromMethod(_ => Substitute.For<ISceneLoader>())
                 .AsSingle();
-            
+
             Container.Bind<IScreenResolver>()
-                .FromMethod(_ => {
+                .FromMethod(_ =>
+                {
                     var resolver = Substitute.For<IScreenResolver>();
                     resolver.ResolveScheme().Returns(_ => new ScreenScheme("", "MockScreenA"));
                     return resolver;
                 })
                 .AsSingle();
 
-            Container.Bind<IUrlDomainProvider>().FromMethod(_ => {
+            Container.Bind<IUrlDomainProvider>().FromMethod(_ =>
+            {
                 var urlProvider = Substitute.For<IUrlDomainProvider>();
                 urlProvider.Url.Returns(appDomain);
                 return urlProvider;
@@ -65,7 +81,8 @@ namespace elselam.Navigation.Tests {
                 .To<UrlManager>()
                 .AsSingle();
 
-            Container.Bind<ITransition>().FromMethod(_ => {
+            Container.Bind<ITransition>().FromMethod(_ =>
+            {
                 var transition = Substitute.For<ITransition>();
                 transition.Transite(Arg.Any<IScreenPresenter>(), Arg.Any<IScreenPresenter>())
                     .Returns(info => UniTask.CompletedTask);
@@ -73,9 +90,10 @@ namespace elselam.Navigation.Tests {
             }).AsSingle();
 
             RegisterScreensModels();
-            
+
             Container.Bind<IScreenRegistry>()
-                .FromMethod(_ => {
+                .FromMethod(_ =>
+                {
                     var defaultScreen = Substitute.For<IScreenRegistry>();
                     defaultScreen.ScreenId.Returns("MockScreenA");
                     defaultScreen.ScreenInteractor.Returns(typeof(ScreenAInteractor));
@@ -83,26 +101,28 @@ namespace elselam.Navigation.Tests {
                     return defaultScreen;
                 })
                 .AsSingle();
-            
+
             Container.Bind<INavigation>()
                 .To<NavigationManager>()
                 .AsSingle();
-            
+
             Container.Inject(this);
         }
 
         [Inject]
-        public void Construct(ISceneLoader sceneLoader, IHistory history, IUrlManager urlManager, INavigation navigation) {
+        public void Construct(ISceneLoader sceneLoader, IHistory history, IUrlManager urlManager, INavigation navigation)
+        {
             this.sceneLoader = sceneLoader;
             this.history = history;
             this.urlManager = urlManager;
             this.navigation = navigation;
-            
+
             navigation.Initialize();
         }
 
         [Test]
-        public void NavigateTo_ValidScreen_Success() {
+        public void NavigateTo_ValidScreen_Success()
+        {
             navigation.NavigateTo<ScreenAInteractor>();
 
             navigation.CurrentScreen.Screen.Should().NotBeNull();
@@ -110,7 +130,8 @@ namespace elselam.Navigation.Tests {
         }
 
         [Test]
-        public void NavigateTo_ValidScreen_ShouldCarryScreenInfos() {
+        public void NavigateTo_ValidScreen_ShouldCarryScreenInfos()
+        {
             var customScreen = Container.Resolve<CustomScreenInteractor>();
             var parameters = new Dictionary<string, string> {
                 {"ItemLength", "15"},
@@ -125,27 +146,33 @@ namespace elselam.Navigation.Tests {
         }
 
         [Test]
-        public void NavigateTo_InvalidScreen_Failure() {
+        public void NavigateTo_InvalidScreen_Failure()
+        {
             NavigationException error = null;
 
-            try {
+            try
+            {
                 navigation.NavigateTo<UnregisteredScreenInteractor>();
             }
-            catch (NavigationException e) {
+            catch (NavigationException e)
+            {
                 error = e;
             }
 
             error.Should().NotBeNull();
         }
-        
+
         [Test]
-        public void NavigateTo_EmptyScreenId_Failure() {
+        public void NavigateTo_EmptyScreenId_Failure()
+        {
             NavigationException error = null;
 
-            try {
+            try
+            {
                 navigation.NavigateTo<EmptyIdInteractor>();
             }
-            catch (NavigationException e) {
+            catch (NavigationException e)
+            {
                 error = e;
             }
 
@@ -153,7 +180,8 @@ namespace elselam.Navigation.Tests {
         }
 
         [Test]
-        public void NavigateTo_UsingValidDeepLink_Success() {
+        public void NavigateTo_UsingValidDeepLink_Success()
+        {
             var urlProvider = Container.Resolve<IUrlDomainProvider>();
             var url = $"{urlProvider.Url}MockScreenA?test=true";
             var scheme = urlManager.Deserialize(url);
@@ -165,15 +193,18 @@ namespace elselam.Navigation.Tests {
         }
 
         [Test]
-        public void NavigateTo_UsingInvalidDeepLink_ThrowNavigationException() {
+        public void NavigateTo_UsingInvalidDeepLink_ThrowNavigationException()
+        {
             NavigationException exception = null;
             var url = "domain://play_group/forum/question?play_all=1&shuffle=1";
             var scheme = urlManager.Deserialize(url);
 
-            try {
+            try
+            {
                 navigation.NavigateTo(scheme);
             }
-            catch (NavigationException e) {
+            catch (NavigationException e)
+            {
                 exception = e;
             }
 
@@ -181,7 +212,8 @@ namespace elselam.Navigation.Tests {
         }
 
         [Test]
-        public void BackToLastScreen_WithFilledHistory_Success() {
+        public void BackToLastScreen_WithFilledHistory_Success()
+        {
             var history = Container.Resolve<IHistory>();
             history.Back().Returns(new ScreenScheme("", "MockScreenA"));
             var transition = Container.Resolve<ITransition>();
@@ -193,16 +225,19 @@ namespace elselam.Navigation.Tests {
         }
 
         [Test]
-        public void BackToLastScreen_WithEmptyHistory_Failure() {
+        public void BackToLastScreen_WithEmptyHistory_Failure()
+        {
             NavigationException error = null;
             var history = Container.Resolve<IHistory>();
             history.Back().Returns((_ => null));
             var transition = Container.Resolve<ITransition>();
 
-            try {
+            try
+            {
                 navigation.BackToLastScreen(transition);
             }
-            catch (NavigationException e) {
+            catch (NavigationException e)
+            {
                 error = e;
             }
 
@@ -210,7 +245,8 @@ namespace elselam.Navigation.Tests {
         }
 
         [Test]
-        public void BackToLastScreen_ValidScreen_ShouldCarryScreenInfos() {
+        public void BackToLastScreen_ValidScreen_ShouldCarryScreenInfos()
+        {
             var history = Container.Resolve<IHistory>();
             var customScreen = Container.Resolve<CustomScreenInteractor>();
             navigation.NavigateTo<CustomScreenInteractor>();
@@ -224,7 +260,8 @@ namespace elselam.Navigation.Tests {
         }
 
         [Test]
-        public void LoadScene_CallSceneLoaderWithLoadScreen() {
+        public void LoadScene_CallSceneLoaderWithLoadScreen()
+        {
             var sceneLoadCalled = false;
             var loadLoadingSceneCalled = false;
             var unloadLoadingSceneCalled = false;
@@ -239,26 +276,28 @@ namespace elselam.Navigation.Tests {
             sceneLoader
                 .When(s => s.UnloadLoadingScene())
                 .Do(_ => unloadLoadingSceneCalled = true);
-            
+
             navigation.NavigateTo(sceneName);
 
             loadLoadingSceneCalled.Should().BeTrue();
             sceneLoadCalled.Should().BeTrue();
             unloadLoadingSceneCalled.Should().BeTrue();
         }
-        
+
         [Test]
-        public void LoadScene_AssignCurrentSchemeToSpecifiedScene() {
+        public void LoadScene_AssignCurrentSchemeToSpecifiedScene()
+        {
             var sceneName = "TestScene";
             navigation.NavigateTo<ScreenAInteractor>();
 
             navigation.NavigateTo(sceneName);
-            
+
             navigation.CurrentScreen.Scheme.ScreenId.Should().Be("TestScene");
         }
-        
+
         [Test]
-        public void LoadScene_LeavingScreen_AddScreenSchemeToHistory() {
+        public void LoadScene_LeavingScreen_AddScreenSchemeToHistory()
+        {
             var addedToHistory = false;
             navigation.NavigateTo<ScreenAInteractor>();
             history
@@ -266,12 +305,13 @@ namespace elselam.Navigation.Tests {
                 .Do(info => addedToHistory = true);
 
             navigation.NavigateTo("");
-            
+
             addedToHistory.Should().BeTrue();
         }
-        
+
         [Test]
-        public void BackFromScene_CallSceneLoaderWithLoadScreen() {
+        public void BackFromScene_CallSceneLoaderWithLoadScreen()
+        {
             var mainSceneLoadCalled = false;
             var loadLoadingSceneCalled = false;
             var unloadLoadingSceneCalled = false;
@@ -292,9 +332,10 @@ namespace elselam.Navigation.Tests {
             mainSceneLoadCalled.Should().BeTrue();
             unloadLoadingSceneCalled.Should().BeTrue();
         }
-        
+
         [Test]
-        public void BackFromScene_ReactivateLastScreen() {
+        public void BackFromScene_ReactivateLastScreen()
+        {
             history.Back().Returns(_ => new ScreenScheme("", "MockScreenA"));
 
             navigation.BackToMainScene();
@@ -303,9 +344,10 @@ namespace elselam.Navigation.Tests {
         }
 
         [Test]
-        public void NavigateTo_SameScreen_CallOnExitAddToHistoryAndCallOnEnter() {
+        public void NavigateTo_SameScreen_CallOnExitAddToHistoryAndCallOnEnter()
+        {
             var sameScreen = Container.Resolve<SameScreenInteractor>();
-            var parameters = new Dictionary<string, string> {["PageIndex"] = 2.ToString()};
+            var parameters = new Dictionary<string, string> { ["PageIndex"] = 2.ToString() };
 
             navigation.NavigateTo<SameScreenInteractor>(parameters: parameters);
             parameters["PageIndex"] = 5.ToString();
@@ -318,36 +360,40 @@ namespace elselam.Navigation.Tests {
         }
 
         [Test]
-        public void BackToLastScreen_LastIsASceneScheme_SetCurrentSceneScheme() {
+        public void BackToLastScreen_LastIsASceneScheme_SetCurrentSceneScheme()
+        {
             var screenAInteractor = Container.ResolveId<IScreenModel>("MockScreenA").Interactor;
             navigation.CurrentScreen.SetCurrentScreen(screenAInteractor, new ScreenScheme(null, "MockScreenA"));
             history.Back().Returns(new SceneScheme(null, "testScene"));
-            
+
             navigation.BackToLastScreen();
-            
+
             navigation.CurrentScreen.Scheme.Should().BeOfType(typeof(SceneScheme));
             navigation.CurrentScreen.Scheme.ScreenId.Should().Be("testScene");
         }
-        
+
         [Test]
-        public void BackToLastScreen_LastIsASceneScheme_CallExitInCurrentScreen() {
+        public void BackToLastScreen_LastIsASceneScheme_CallExitInCurrentScreen()
+        {
             var onExitInteractor = Container.Resolve<OnExitInteractor>();
             navigation.CurrentScreen.SetCurrentScreen(onExitInteractor, new ScreenScheme(null, "MockScreenA"));
             history.Back().Returns(new SceneScheme(null, "testScene"));
-            
+
             navigation.BackToLastScreen();
 
             onExitInteractor.OnExitCalled.Should().Be(1);
         }
 
-        private List<IScreenRegistry> MockScreenRegistry() {
+        private List<IScreenRegistry> MockScreenRegistry()
+        {
             var registryA = Container.ResolveId<IScreenRegistry>("MockScreenA");
             var registryB = Container.ResolveId<IScreenRegistry>("MockScreenB");
             var registryCustom = Container.ResolveId<IScreenRegistry>("MockScreenCustom");
-            return new List<IScreenRegistry> {registryA, registryB, registryCustom};
+            return new List<IScreenRegistry> { registryA, registryB, registryCustom };
         }
 
-        private void RegisterScreensModels() {
+        private void RegisterScreensModels()
+        {
             var registryA = Substitute.For<IScreenRegistry>();
             registryA.ScreenInteractor.Returns(typeof(ScreenAInteractor));
             registryA.ScreenPresenter.Returns(typeof(ScreenAPresenter));
@@ -407,7 +453,7 @@ namespace elselam.Navigation.Tests {
                     Container.Resolve<EmptyIdInteractor>(),
                     Container.Resolve<EmptyIdPresenter>(),
                     null));
-            
+
             var sameIdRegistry = Substitute.For<IScreenRegistry>();
             sameIdRegistry.ScreenInteractor.Returns(typeof(SameScreenInteractor));
             sameIdRegistry.ScreenPresenter.Returns(typeof(SameScreenPresenter));
@@ -422,7 +468,7 @@ namespace elselam.Navigation.Tests {
                     Container.Resolve<SameScreenInteractor>(),
                     Container.Resolve<SameScreenPresenter>(),
                     null));
-            
+
             var onExitRegistry = Substitute.For<IScreenRegistry>();
             onExitRegistry.ScreenInteractor.Returns(typeof(OnExitInteractor));
             onExitRegistry.ScreenPresenter.Returns(typeof(OnExitPresenter));
@@ -438,7 +484,7 @@ namespace elselam.Navigation.Tests {
                     Container.Resolve<OnExitPresenter>(),
                     null));
 
-            var registries = new List<IScreenRegistry> {registryA, registryB, registryCustom, emptyIdRegistry, sameIdRegistry, onExitRegistry};
+            var registries = new List<IScreenRegistry> { registryA, registryB, registryCustom, emptyIdRegistry, sameIdRegistry, onExitRegistry };
             Container.Bind<List<IScreenRegistry>>()
                 .FromInstance(registries)
                 .AsSingle();

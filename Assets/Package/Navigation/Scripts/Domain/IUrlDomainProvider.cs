@@ -1,5 +1,7 @@
-namespace elselam.Navigation.Domain {
-    public interface IUrlDomainProvider {
+namespace Elselam.UnityRouter.Domain
+{
+    public interface IUrlDomainProvider
+    {
         string Url { get; }
     }
 }

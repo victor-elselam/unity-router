@@ -1,13 +1,17 @@
+using Elselam.UnityRouter.Domain;
+using Elselam.UnityRouter.Extensions;
 using System;
-using elselam.Navigation.Domain;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using elselam.Navigation.Extensions;
 
+#pragma warning disable IDE0044 // Add readonly modifier
+#pragma warning disable IDE0051 // Remove unused private members
 // ReSharper disable NotAccessedField.Local
-namespace elselam.Navigation.ScriptableObjects {
+namespace Elselam.UnityRouter.Installers
+{
     [Serializable]
-    public class ScreenRegistry : IScreenRegistry {
+    public class ScreenRegistry : IScreenRegistry
+    {
         [SerializeField] private string screenId;
 
         [SerializeField] private Object interactor;
@@ -29,3 +33,5 @@ namespace elselam.Navigation.ScriptableObjects {
         public BaseScreenPresenter ScreenPrefab => presenter;
     }
 }
+#pragma warning restore IDE0044 // Add readonly modifier
+#pragma warning restore IDE0051 // Remove unused private members

@@ -1,5 +1,7 @@
-namespace Sample.ChangeSceneSample.Screens.ScreenA.Presenter {
-    public interface IScreenAPresenter {
-        
+namespace Sample.ChangeSceneSample.Screens.ScreenA.Presenter
+{
+    public interface IScreenAPresenter
+    {
+
     }
 }

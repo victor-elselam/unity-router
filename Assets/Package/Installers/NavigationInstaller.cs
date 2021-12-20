@@ -1,28 +1,35 @@
-﻿using elselam.Navigation.Domain;
-using elselam.Navigation.History;
-using elselam.Navigation.Navigation;
-using elselam.Navigation.SceneLoad;
-using elselam.Navigation.Url;
+﻿using Elselam.UnityRouter.Domain;
+using Elselam.UnityRouter.History;
+using Elselam.UnityRouter.Installers;
+using Elselam.UnityRouter.SceneLoad;
+using Elselam.UnityRouter.Url;
 using UnityEngine;
 using Zenject;
 
-namespace elselam.Navigation.ScriptableObjects {
+namespace Elselam.UnityRouter.Installers
+{
     [CreateAssetMenu(fileName = "NavigationInstaller", menuName = "Elselam/UNavScreen/NavigationInstaller")]
-    public class NavigationInstaller : ScriptableObjectInstaller {
+    public class NavigationInstaller : ScriptableObjectInstaller
+    {
         [SerializeField] private AppUrlDomain appUrlDomain;
         [SerializeField] private ScreenRegistryObject defaultScreen;
         [SerializeField] private string loadingSceneName;
         [SerializeField] private string mainSceneName;
 
-        public override void InstallBindings() {
+        public override void InstallBindings()
+        {
             Container.Bind<IScreenRegistry>()
-                     .FromInstance(defaultScreen.ScreenRegistry)
-                     .AsSingle();
+                .FromInstance(defaultScreen.ScreenRegistry)
+                .AsSingle();
+
+            Container.Bind<IScreenFactory<IScreenRegistry, IScreenModel>>()
+                .To<ScreenFactory>()
+                .AsSingle();
 
             Container.Bind<IUrlManager>()
                 .To<UrlManager>()
                 .AsSingle();
-            
+
             Container.Bind<IScreenResolver>()
                 .To<ScreenResolver>()
                 .AsSingle();
@@ -31,7 +38,7 @@ namespace elselam.Navigation.ScriptableObjects {
                 .To<SceneLoader>()
                 .AsSingle()
                 .WithArguments(loadingSceneName, mainSceneName);
-            
+
             Container.Bind<IHistory>()
                 .To<HistoryManager>()
                 .AsSingle();
