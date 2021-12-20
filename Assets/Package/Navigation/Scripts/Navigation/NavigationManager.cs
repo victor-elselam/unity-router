@@ -131,9 +131,7 @@ namespace Elselam.UnityRouter.Installers
             if (enterScreenModel == null)
             {
                 if (TryNavigateToScene(enterScheme))
-                {
                     return;
-                }
 
                 throw new NavigationException($"No screen or scene with name: {enterScheme.ScreenId} found");
             }
