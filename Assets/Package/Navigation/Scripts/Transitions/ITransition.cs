@@ -8,4 +8,5 @@ namespace Elselam.UnityRouter.Transitions
     {
         UniTask Transite([CanBeNull] IScreenPresenter enterScreen, [CanBeNull] IScreenPresenter exitScreen);
     }
+
 }
