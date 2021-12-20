@@ -36,5 +36,6 @@ namespace elselam.Navigation.Installers {
                 .Select(s => (IScreenRegistry) s.ScreenRegistry).ToList())
                 .AsSingle();
         }
+
     }
 }
