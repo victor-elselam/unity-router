@@ -2,7 +2,6 @@ using Cysharp.Threading.Tasks;
 using Elselam.UnityRouter.Domain;
 using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.Installers;
-using Elselam.UnityRouter.Installers;
 using Elselam.UnityRouter.SceneLoad;
 using Elselam.UnityRouter.Transitions;
 using Elselam.UnityRouter.Url;
@@ -43,19 +42,16 @@ namespace Elselam.UnityRouter.Tests
                 })
                 .AsSingle();
 
-            Container.Bind<IScreenFactory<IScreenRegistry, IScreenModel>>()
+            Container.Bind<IScreenFactory>()
                 .FromMethod(_ =>
                 {
-                    var screenFactory = Substitute.For<IScreenFactory<IScreenRegistry, IScreenModel>>();
+                    var screenFactory = Substitute.For<IScreenFactory>();
                     screenFactory
                         .Create(Arg.Any<IScreenRegistry>())
                         .Returns(info => Container.ResolveId<IScreenModel>(info.Arg<IScreenRegistry>().ScreenId));
                     return screenFactory;
                 })
                 .AsSingle();
-
-            //Container.BindFactory<IScreenRegistry, IScreenModel, ScreenFactory>().FromMethod((container, registry)
-            //    => Container.ResolveId<IScreenModel>(registry.ScreenId));
 
             Container.Bind<ISceneLoader>()
                 .FromMethod(_ => Substitute.For<ISceneLoader>())

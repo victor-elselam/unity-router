@@ -27,7 +27,7 @@ namespace Elselam.UnityRouter.Installers
                     .AsSingle()
                     .Lazy();
 
-                Container.BindInterfacesAndSelfTo(screenRegistry.ScreenController)
+                Container.BindInterfacesAndSelfTo(screenRegistry.ScreenView)
                     .FromComponentInHierarchy()
                     .AsSingle();
             }

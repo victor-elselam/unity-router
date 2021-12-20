@@ -21,7 +21,7 @@ namespace Elselam.UnityRouter.Installers
         private readonly ISceneLoader sceneLoader;
         private readonly IScreenResolver screenResolver;
         private readonly List<IScreenRegistry> screenRegistries;
-        private readonly IScreenFactory<IScreenRegistry, IScreenModel> screenFactory;
+        private readonly IScreenFactory screenFactory;
         private bool loading;
         private readonly Dictionary<string, IScreenModel> screenModels;
 
@@ -29,7 +29,7 @@ namespace Elselam.UnityRouter.Installers
 
         [Inject]
         public NavigationManager(List<IScreenRegistry> screenRegistries,
-            IScreenFactory<IScreenRegistry, IScreenModel> screenFactory,
+            IScreenFactory screenFactory,
             IScreenResolver screenResolver,
             ISceneLoader sceneLoader,
             IUrlManager urlManager,
@@ -55,7 +55,7 @@ namespace Elselam.UnityRouter.Installers
             {
                 screenModels[screenRegistry.ScreenId] = screenFactory.Create(screenRegistry);
             }
-            NavigateTo(screenResolver.ResolveScheme());
+            NavigateTo(screenResolver.ResolveScheme(), null, false);
         }
 
         public void NavigateTo<TScreen>(ITransition transition = null, IDictionary<string, string> parameters = null) where TScreen : IScreenInteractor
@@ -116,7 +116,12 @@ namespace Elselam.UnityRouter.Installers
             }
         }
 
-        public void NavigateTo(ScreenScheme enterScheme, ITransition transition = null, bool back = false)
+        public void NavigateTo(ScreenScheme enterScheme, ITransition transition = null)
+        {
+            NavigateTo(enterScheme, transition, false);
+        }
+
+        private void NavigateTo(ScreenScheme enterScheme, ITransition transition = null, bool back = false)
         {
             if (loading) //safe guard to avoid concurrent loadings
                 return;
@@ -126,9 +131,7 @@ namespace Elselam.UnityRouter.Installers
             if (enterScreenModel == null)
             {
                 if (TryNavigateToScene(enterScheme))
-                {
                     return;
-                }
 
                 throw new NavigationException($"No screen or scene with name: {enterScheme.ScreenId} found");
             }

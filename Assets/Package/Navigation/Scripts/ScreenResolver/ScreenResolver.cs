@@ -1,5 +1,4 @@
 using Elselam.UnityRouter.History;
-using Elselam.UnityRouter.Installers;
 using Elselam.UnityRouter.Url;
 using UnityEngine;
 
@@ -11,7 +10,6 @@ namespace Elselam.UnityRouter.Installers
         private readonly IScreenRegistry defaultScreen;
         private readonly IUrlManager urlManager;
 
-        private ScreenScheme screenScheme;
         private string deepLinkUrl;
 
         public ScreenResolver(IHistory history,
@@ -32,6 +30,7 @@ namespace Elselam.UnityRouter.Installers
             }
         }
 
+        //TODO: remove this method from interface, we need to make an adapter to Unity Application.deepLinkActivated
         public void ApplicationOnDeepLinkActivated(string deepLinkUrl) => this.deepLinkUrl = deepLinkUrl;
 
         public ScreenScheme ResolveScheme()

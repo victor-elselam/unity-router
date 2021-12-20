@@ -1,6 +1,5 @@
 ﻿using Elselam.UnityRouter.Domain;
 using Elselam.UnityRouter.History;
-using Elselam.UnityRouter.Installers;
 using Elselam.UnityRouter.SceneLoad;
 using Elselam.UnityRouter.Url;
 using UnityEngine;
@@ -22,7 +21,7 @@ namespace Elselam.UnityRouter.Installers
                 .FromInstance(defaultScreen.ScreenRegistry)
                 .AsSingle();
 
-            Container.Bind<IScreenFactory<IScreenRegistry, IScreenModel>>()
+            Container.Bind<IScreenFactory>()
                 .To<ScreenFactory>()
                 .AsSingle();
 
