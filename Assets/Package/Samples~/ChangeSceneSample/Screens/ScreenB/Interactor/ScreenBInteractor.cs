@@ -1,4 +1,5 @@
 using Elselam.UnityRouter.Domain;
+using Elselam.UnityRouter.Extensions;
 using Elselam.UnityRouter.Installers;
 using Sample.ChangeSceneSample.Screens.ScreenB.Presenter;
 using System.Collections.Generic;
@@ -10,20 +11,24 @@ namespace Sample.ChangeSceneSample.Screens.ScreenB.Interactor
         private float elementPosition = 0;
         private readonly IScreenBPresenter presenter;
         private readonly INavigation navigation;
+        private readonly IParameterManager parameterManager;
 
-        public ScreenBInteractor(IScreenBPresenter presenter, INavigation navigation)
+        public ScreenBInteractor(IScreenBPresenter presenter, INavigation navigation, IParameterManager parameterManager)
         {
             this.presenter = presenter;
             this.navigation = navigation;
+            this.parameterManager = parameterManager;
         }
 
         public override void WithParameters(IDictionary<string, string> parameters)
         {
-            if (parameters.TryGetValue("elementPosition", out var position))
-            {
-                elementPosition = float.Parse(position);
-                presenter.SliderPosition(elementPosition);
-            }
+            elementPosition = parameterManager.GetParamOfType<float>(parameters, "elementPosition", defaultValue: elementPosition);
+            presenter.SliderPosition(elementPosition);
+        }
+
+        public void BackToLastScreen()
+        {
+            navigation.BackToLastScreen();
         }
 
         public void LoadScene(string scene)
@@ -38,8 +43,8 @@ namespace Sample.ChangeSceneSample.Screens.ScreenB.Interactor
 
         public override IDictionary<string, string> OnExit()
         {
-            var parameters = new Dictionary<string, string>();
-            parameters["elementPosition"] = $"{elementPosition}";
+            var paramPosition = parameterManager.Create("elementPosition", elementPosition);
+            var parameters = parameterManager.CreateDictionary(paramPosition);
             return parameters;
         }
     }

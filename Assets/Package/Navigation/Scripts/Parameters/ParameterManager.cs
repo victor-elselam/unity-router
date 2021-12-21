@@ -18,11 +18,11 @@ namespace Elselam.UnityRouter.Extensions
             return dictio;
         }
 
-        public T GetParamOfType<T>(IDictionary<string, string> parameters, string key)
+        public T GetParamOfType<T>(IDictionary<string, string> parameters, string key, T defaultValue = default)
         {
             var hasValue = parameters.TryGetValue(key, out string result);
             if (!hasValue)
-                return default;
+                return defaultValue;
 
             try
             {

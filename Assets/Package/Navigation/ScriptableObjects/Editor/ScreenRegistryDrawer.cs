@@ -19,8 +19,8 @@ namespace Elselam.UnityRouter.Installers.Editor
         private const string PRESENTER_PROPERTY = "presenter";
         private const string PRESENTER_PROPERTY_NAME = "presenterTypeName";
 
-        private const string CONTROLLER_PROPERTY = "controller";
-        private const string CONTROLLER_PROPERTY_NAME = "controllerTypeName";
+        private const string CONTROLLER_PROPERTY = "view";
+        private const string CONTROLLER_PROPERTY_NAME = "viewTypeName";
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -82,7 +82,7 @@ namespace Elselam.UnityRouter.Installers.Editor
             controllerTypeName.stringValue = GetName(controllerVariable.objectReferenceValue);
 
             var controllerNameRect = new Rect(position.x, GetY(position, height, currentSpace), position.width, height);
-            controllerNameRect = EditorGUI.PrefixLabel(controllerNameRect, new GUIContent("ControllerType"));
+            controllerNameRect = EditorGUI.PrefixLabel(controllerNameRect, new GUIContent("ViewType"));
             EditorGUI.LabelField(controllerNameRect, controllerTypeName.stringValue);
 
             EditorGUI.EndProperty();

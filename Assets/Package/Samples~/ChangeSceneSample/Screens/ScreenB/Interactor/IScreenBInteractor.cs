@@ -4,5 +4,6 @@ namespace Sample.ChangeSceneSample.Screens.ScreenB.Interactor
     {
         void LoadScene(string scene);
         void UpdateElementPosition(float position);
+        void BackToLastScreen();
     }
 }

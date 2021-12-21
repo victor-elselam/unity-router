@@ -85,7 +85,7 @@ namespace Elselam.UnityRouter.Tests
         }
 
         [Test]
-        public void GetParameterOfType_ObjectInvalid_ReturnNull()
+        public void GetParameterOfType_ObjectInvalidWithoutDefault_ReturnNull()
         {
             var str = parameterManager.Create("str", "value");
             var count = parameterManager.Create("count", 2);
@@ -97,7 +97,22 @@ namespace Elselam.UnityRouter.Tests
         }
 
         [Test]
-        public void GetParameterOfType_IntInvalid_Return0()
+        public void GetParameterOfType_ObjectInvalidWithDefault_ReturnDefault()
+        {
+            var str = parameterManager.Create("str", "value");
+            var count = parameterManager.Create("count", 2);
+            var parameters = parameterManager.CreateDictionary(str, count);
+            var defaultValue = new TestClass("str", 1, true);
+
+            var result = parameterManager.GetParamOfType<TestClass>(parameters, "obj", defaultValue);
+
+            result.Test.Should().Be("str");
+            result.Count.Should().Be(1);
+            result.Valid.Should().Be(true);
+        }
+
+        [Test]
+        public void GetParameterOfType_IntInvalidWithoutDefault_Return0()
         {
             var str = parameterManager.Create("str", "value");
             var parameters = parameterManager.CreateDictionary(str);
@@ -105,6 +120,18 @@ namespace Elselam.UnityRouter.Tests
             var result = parameterManager.GetParamOfType<int>(parameters, "count");
 
             result.Should().Be(0);
+        }
+
+        [Test]
+        public void GetParameterOfType_IntInvalidWithDefault_ReturnDefault()
+        {
+            var str = parameterManager.Create("str", "value");
+            var parameters = parameterManager.CreateDictionary(str);
+            var defaultValue = 3;
+
+            var result = parameterManager.GetParamOfType<int>(parameters, "count", defaultValue);
+
+            result.Should().Be(3);
         }
 
         private class TestClass
