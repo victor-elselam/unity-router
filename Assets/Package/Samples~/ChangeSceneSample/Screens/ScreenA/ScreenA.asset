@@ -16,8 +16,7 @@ MonoBehaviour:
     screenId: ScreenA
     interactor: {fileID: 11500000, guid: 8102f0d02a4d043b1be75ce06ce4313b, type: 3}
     interactorTypeName: ScreenAInteractor
-    presenter: {fileID: 5317322536617825571, guid: 84020f41257b24efbaf8a98107e6667e,
-      type: 3}
+    presenter: {fileID: 5317322536617825571, guid: 84020f41257b24efbaf8a98107e6667e, type: 3}
     presenterTypeName: ScreenAPresenter
-    controller: {fileID: 11500000, guid: 099a7c1dbad3c47559fd974e8ea3d8df, type: 3}
-    controllerTypeName: ScreenAController
+    view: {fileID: 11500000, guid: 099a7c1dbad3c47559fd974e8ea3d8df, type: 3}
+    viewTypeName: ScreenAView

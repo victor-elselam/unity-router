@@ -1,4 +1,5 @@
 ﻿using Elselam.UnityRouter.Domain;
+using Elselam.UnityRouter.Extensions;
 using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.SceneLoad;
 using Elselam.UnityRouter.Url;
@@ -48,6 +49,10 @@ namespace Elselam.UnityRouter.Installers
 
             Container.Bind<IUrlDomainProvider>()
                 .FromInstance(appUrlDomain)
+                .AsSingle();
+
+            Container.Bind<IParameterManager>()
+                .To<ParameterManager>()
                 .AsSingle();
         }
     }
