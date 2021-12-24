@@ -8,22 +8,19 @@ using Zenject;
 
 namespace Elselam.UnityRouter.Installers
 {
-    [CreateAssetMenu(fileName = "NavigationInstaller", menuName = "Elselam/UNavScreen/NavigationInstaller")]
+    [CreateAssetMenu(fileName = "NavigationInstaller", menuName = "Elselam/UnityRouter/Installers/Navigation")]
     public class NavigationInstaller : ScriptableObjectInstaller
     {
-        [SerializeField] private AppUrlDomain appUrlDomain;
-        [SerializeField] private ScreenRegistryObject defaultScreen;
-        [SerializeField] private string loadingSceneName;
-        [SerializeField] private string mainSceneName;
+        [SerializeField] private NavigationSettings navigationSettings;
 
         public override void InstallBindings()
         {
             Container.Bind<IScreenRegistry>()
-                .FromInstance(defaultScreen.ScreenRegistry)
+                .FromInstance(navigationSettings.DefaultScreen.ScreenRegistry)
                 .AsSingle();
 
             Container.Bind<IScreenFactory>()
-                .To<ScreenFactory>()
+                .To<DIScreenFactory>()
                 .AsSingle();
 
             Container.Bind<IUrlManager>()
@@ -35,9 +32,9 @@ namespace Elselam.UnityRouter.Installers
                 .AsSingle();
 
             Container.Bind<ISceneLoader>()
-                .To<SceneLoader>()
+                .To<DISceneLoader>()
                 .AsSingle()
-                .WithArguments(loadingSceneName, mainSceneName);
+                .WithArguments(navigationSettings.LoadingSceneName, navigationSettings.MainSceneName);
 
             Container.Bind<IHistory>()
                 .To<HistoryManager>()
@@ -48,7 +45,11 @@ namespace Elselam.UnityRouter.Installers
                 .AsSingle();
 
             Container.Bind<IUrlDomainProvider>()
-                .FromInstance(appUrlDomain)
+                .FromInstance(navigationSettings.AppUrlDomain)
+                .AsSingle();
+
+            Container.Bind<ICurrentScreen>()
+                .To<CurrentScreen>()
                 .AsSingle();
 
             Container.Bind<IParameterManager>()
