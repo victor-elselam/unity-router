@@ -18,11 +18,11 @@ namespace Elselam.UnityRouter.Tests
     [TestFixture]
     public class NavigationTests : ZenjectUnitTestFixture
     {
-
         private List<ScreenScheme> historyList;
         private ISceneLoader sceneLoader;
         private IHistory history;
         private IUrlManager urlManager;
+        private ICurrentScreen currentScreen;
         private INavigation navigation;
 
         [SetUp]
@@ -40,6 +40,10 @@ namespace Elselam.UnityRouter.Tests
                     history.Add(Arg.Any<ScreenScheme>()).Returns(true);
                     return history;
                 })
+                .AsSingle();
+
+            Container.Bind<ICurrentScreen>()
+                .To<MockCurrentScreen>()
                 .AsSingle();
 
             Container.Bind<IScreenFactory>()
@@ -106,11 +110,12 @@ namespace Elselam.UnityRouter.Tests
         }
 
         [Inject]
-        public void Construct(ISceneLoader sceneLoader, IHistory history, IUrlManager urlManager, INavigation navigation)
+        public void Construct(ISceneLoader sceneLoader, IHistory history, IUrlManager urlManager, ICurrentScreen currentScreen, INavigation navigation)
         {
             this.sceneLoader = sceneLoader;
             this.history = history;
             this.urlManager = urlManager;
+            this.currentScreen = currentScreen;
             this.navigation = navigation;
 
             navigation.Initialize();
@@ -121,8 +126,8 @@ namespace Elselam.UnityRouter.Tests
         {
             navigation.NavigateTo<ScreenAInteractor>();
 
-            navigation.CurrentScreen.Screen.Should().NotBeNull();
-            navigation.CurrentScreen.Screen.GetType().Should().Be(typeof(ScreenAInteractor));
+            currentScreen.Screen.Should().NotBeNull();
+            currentScreen.Screen.GetType().Should().Be(typeof(ScreenAInteractor));
         }
 
         [Test]
@@ -184,8 +189,8 @@ namespace Elselam.UnityRouter.Tests
 
             navigation.NavigateTo(scheme);
 
-            navigation.CurrentScreen.Scheme.ScreenId.Should().Be("MockScreenA");
-            navigation.CurrentScreen.Scheme.Parameters["test"].Should().Be("true");
+            currentScreen.Scheme.ScreenId.Should().Be("MockScreenA");
+            currentScreen.Scheme.Parameters["test"].Should().Be("true");
         }
 
         [Test]
@@ -216,8 +221,8 @@ namespace Elselam.UnityRouter.Tests
 
             navigation.BackToLastScreen(transition);
 
-            navigation.CurrentScreen.Screen.Should().NotBeNull();
-            navigation.CurrentScreen.Screen.GetType().Should().Be(typeof(ScreenAInteractor));
+            currentScreen.Screen.Should().NotBeNull();
+            currentScreen.Screen.GetType().Should().Be(typeof(ScreenAInteractor));
         }
 
         [Test]
@@ -283,12 +288,11 @@ namespace Elselam.UnityRouter.Tests
         [Test]
         public void LoadScene_AssignCurrentSchemeToSpecifiedScene()
         {
-            var sceneName = "TestScene";
             navigation.NavigateTo<ScreenAInteractor>();
 
-            navigation.NavigateTo(sceneName);
+            navigation.NavigateTo("TestScene");
 
-            navigation.CurrentScreen.Scheme.ScreenId.Should().Be("TestScene");
+            currentScreen.Scheme.ScreenId.Should().Be("TestScene");
         }
 
         [Test]
@@ -332,11 +336,12 @@ namespace Elselam.UnityRouter.Tests
         [Test]
         public void BackFromScene_ReactivateLastScreen()
         {
-            history.Back().Returns(_ => new ScreenScheme("", "MockScreenA"));
+            var scheme = new ScreenScheme("", "MockScreenA");
+            history.Back().Returns(_ => scheme);
 
             navigation.BackToMainScene();
 
-            navigation.CurrentScreen.Scheme.ScreenId.Should().Be("MockScreenA");
+            currentScreen.Scheme.ScreenId.Should().Be("MockScreenA");
         }
 
         [Test]
@@ -359,33 +364,25 @@ namespace Elselam.UnityRouter.Tests
         public void BackToLastScreen_LastIsASceneScheme_SetCurrentSceneScheme()
         {
             var screenAInteractor = Container.ResolveId<IScreenModel>("MockScreenA").Interactor;
-            navigation.CurrentScreen.SetCurrentScreen(screenAInteractor, new ScreenScheme(null, "MockScreenA"));
+            currentScreen.SetCurrentScreen(screenAInteractor, new ScreenScheme(null, "MockScreenA"));
             history.Back().Returns(new SceneScheme(null, "testScene"));
 
             navigation.BackToLastScreen();
 
-            navigation.CurrentScreen.Scheme.Should().BeOfType(typeof(SceneScheme));
-            navigation.CurrentScreen.Scheme.ScreenId.Should().Be("testScene");
+            currentScreen.Scheme.Should().BeOfType(typeof(SceneScheme));
+            currentScreen.Scheme.ScreenId.Should().Be("testScene");
         }
 
         [Test]
         public void BackToLastScreen_LastIsASceneScheme_CallExitInCurrentScreen()
         {
             var onExitInteractor = Container.Resolve<OnExitInteractor>();
-            navigation.CurrentScreen.SetCurrentScreen(onExitInteractor, new ScreenScheme(null, "MockScreenA"));
+            currentScreen.SetCurrentScreen(onExitInteractor, new ScreenScheme(null, "MockScreenA"));
             history.Back().Returns(new SceneScheme(null, "testScene"));
 
             navigation.BackToLastScreen();
 
             onExitInteractor.OnExitCalled.Should().Be(1);
-        }
-
-        private List<IScreenRegistry> MockScreenRegistry()
-        {
-            var registryA = Container.ResolveId<IScreenRegistry>("MockScreenA");
-            var registryB = Container.ResolveId<IScreenRegistry>("MockScreenB");
-            var registryCustom = Container.ResolveId<IScreenRegistry>("MockScreenCustom");
-            return new List<IScreenRegistry> { registryA, registryB, registryCustom };
         }
 
         private void RegisterScreensModels()
@@ -484,6 +481,21 @@ namespace Elselam.UnityRouter.Tests
             Container.Bind<List<IScreenRegistry>>()
                 .FromInstance(registries)
                 .AsSingle();
+        }
+    }
+
+    public class MockCurrentScreen : ICurrentScreen
+    {
+        private IScreenInteractor screenInteractor;
+        private ScreenScheme scheme;
+
+        public IScreenInteractor Screen => screenInteractor;
+        public ScreenScheme Scheme => scheme;
+
+        public void SetCurrentScreen(IScreenInteractor screenController, ScreenScheme scheme)
+        {
+            this.screenInteractor = screenController;
+            this.scheme = scheme;
         }
     }
 }

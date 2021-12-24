@@ -25,15 +25,14 @@ namespace Elselam.UnityRouter.Installers
         private bool loading;
         private readonly Dictionary<string, IScreenModel> screenModels;
 
-        public ICurrentScreen CurrentScreen => currentScreen;
-
         [Inject]
         public NavigationManager(List<IScreenRegistry> screenRegistries,
             IScreenFactory screenFactory,
             IScreenResolver screenResolver,
             ISceneLoader sceneLoader,
             IUrlManager urlManager,
-            IHistory history)
+            IHistory history,
+            ICurrentScreen currentScreen)
         {
             this.history = history;
             this.screenFactory = screenFactory;
@@ -41,8 +40,8 @@ namespace Elselam.UnityRouter.Installers
             this.screenRegistries = screenRegistries;
             this.sceneLoader = sceneLoader;
             this.urlManager = urlManager;
+            this.currentScreen = currentScreen;
 
-            currentScreen = new CurrentScreen();
             defaultTransition = new DefaultTransition();
 
             screenResolver.Initialize();
@@ -136,11 +135,11 @@ namespace Elselam.UnityRouter.Installers
                 throw new NavigationException($"No screen or scene with name: {enterScheme.ScreenId} found");
             }
 
-            var exitScreenModel = GetScreenInstances(CurrentScreen.Scheme?.ScreenId);
+            var exitScreenModel = GetScreenInstances(currentScreen.Scheme?.ScreenId);
             if (exitScreenModel != null)
             {
                 UnloadExitScreen(exitScreenModel.Interactor, back);
-                Transition(transition, enterScreenModel.Presenter, exitScreenModel.Presenter);
+                Transition(transition, enterScreenModel.Presenter, exitScreenModel?.Presenter ?? null);
             }
             else
             {
@@ -154,14 +153,14 @@ namespace Elselam.UnityRouter.Installers
 
         private void UnloadScreenToScene(string sceneName, bool back)
         {
-            if (CurrentScreen.Screen != null)
+            if (currentScreen.Screen != null)
             {
-                UnloadExitScreen(CurrentScreen.Screen, back);
-                var exitScreen = GetScreenInstances(CurrentScreen.Scheme.ScreenId).Presenter;
+                UnloadExitScreen(currentScreen.Screen, back);
+                var exitScreen = GetScreenInstances(currentScreen.Scheme.ScreenId).Presenter;
                 Transition(defaultTransition, null, exitScreen);
             }
 
-            CurrentScreen.SetCurrentScreen(null, new SceneScheme(string.Empty, sceneName));
+            currentScreen.SetCurrentScreen(null, new SceneScheme(string.Empty, sceneName));
         }
 
         private async UniTask Transition(ITransition transition, IScreenPresenter enter, IScreenPresenter exit)

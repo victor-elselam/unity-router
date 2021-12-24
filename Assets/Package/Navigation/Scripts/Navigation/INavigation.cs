@@ -53,10 +53,5 @@ namespace Elselam.UnityRouter.Installers
         /// Back to main scene, specified in 'NavigationInstaller' in the field 'mainSceneName'
         /// </summary>
         void BackToMainScene();
-
-        /// <summary>
-        /// Metadata of the current screen
-        /// </summary>
-        ICurrentScreen CurrentScreen { get; }
     }
 }
