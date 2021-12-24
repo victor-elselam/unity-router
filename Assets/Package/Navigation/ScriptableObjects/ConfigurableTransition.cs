@@ -6,7 +6,9 @@ using UnityEngine;
 
 namespace Elselam.UnityRouter.Installers
 {
-    [CreateAssetMenu(fileName = "New Transition", menuName = "Elselam/UnityRouter")]
+    /// <summary>
+    /// Inherit this to create editor configurable transitions
+    /// </summary>
     public abstract class ConfigurableTransition : ScriptableObject, ITransition
     {
         public abstract UniTask Transite([CanBeNull] IScreenPresenter enterScreen, [CanBeNull] IScreenPresenter exitScreen);
