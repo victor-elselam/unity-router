@@ -2,6 +2,7 @@
 using Elselam.UnityRouter.Extensions;
 using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.SceneLoad;
+using Elselam.UnityRouter.ScreenLoad;
 using Elselam.UnityRouter.Url;
 using UnityEngine;
 using Zenject;
@@ -16,7 +17,7 @@ namespace Elselam.UnityRouter.Installers
         public override void InstallBindings()
         {
             Container.Bind<IScreenRegistry>()
-                .FromInstance(navigationSettings.DefaultScreen.ScreenRegistry)
+                .FromInstance(navigationSettings.DefaultScreen)
                 .AsSingle();
 
             Container.Bind<IScreenFactory>()
@@ -35,6 +36,10 @@ namespace Elselam.UnityRouter.Installers
                 .To<DISceneLoader>()
                 .AsSingle()
                 .WithArguments(navigationSettings.LoadingSceneName, navigationSettings.MainSceneName);
+
+            Container.Bind<IScreenLoader>()
+                .To<ScreenLoader>()
+                .AsSingle();
 
             Container.Bind<IHistory>()
                 .To<HistoryManager>()

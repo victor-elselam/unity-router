@@ -1,4 +1,5 @@
 using Elselam.UnityRouter.History;
+using System;
 
 namespace Elselam.UnityRouter.Installers
 {
@@ -20,5 +21,9 @@ namespace Elselam.UnityRouter.Installers
         /// Start to listen to deep links. Activate immediately if we already have a deep link in system cache
         /// </summary>
         void Initialize();
+
+        string GetScreenName(Type controllerType);
+
+        IScreenModel GetScreenModel(string screenName);
     }
 }

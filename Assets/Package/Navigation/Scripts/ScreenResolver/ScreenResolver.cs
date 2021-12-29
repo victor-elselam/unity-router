@@ -1,5 +1,9 @@
+using Elselam.UnityRouter.Extensions;
 using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.Url;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Elselam.UnityRouter.Installers
@@ -9,13 +13,21 @@ namespace Elselam.UnityRouter.Installers
         private readonly IHistory history;
         private readonly IScreenRegistry defaultScreen;
         private readonly IUrlManager urlManager;
+        private readonly IScreenFactory screenFactory;
+        private readonly List<IScreenRegistry> screenRegistries;
 
         private string deepLinkUrl;
+        private Dictionary<string, IScreenModel> screenModels;
 
-        public ScreenResolver(IHistory history,
+        public ScreenResolver(
+            List<IScreenRegistry> screenRegistries,
+            IScreenFactory screenFactory,
+            IHistory history,
             IScreenRegistry defaultScreen,
             IUrlManager urlManager)
         {
+            this.screenRegistries = screenRegistries;
+            this.screenFactory = screenFactory;
             this.history = history;
             this.defaultScreen = defaultScreen;
             this.urlManager = urlManager;
@@ -23,6 +35,10 @@ namespace Elselam.UnityRouter.Installers
 
         public void Initialize()
         {
+            screenModels = new Dictionary<string, IScreenModel>();
+            foreach (var screenRegistry in screenRegistries)
+                screenModels[screenRegistry.ScreenId] = screenFactory.Create(screenRegistry);
+
             Application.deepLinkActivated += ApplicationOnDeepLinkActivated;
             if (!string.IsNullOrEmpty(Application.absoluteURL))
             {
@@ -42,6 +58,15 @@ namespace Elselam.UnityRouter.Installers
                 return scheme;
             }
             return history.HasHistory ? history.Back() : urlManager.BuildToScheme(defaultScreen.ScreenId, null);
+        }
+
+        public string GetScreenName(Type controllerType) => screenRegistries.FirstOrDefault(s => s.ScreenInteractor == controllerType)?.ScreenId;
+
+        public IScreenModel GetScreenModel(string screenName)
+        {
+            if (screenName.IsNullOrEmpty())
+                return null;
+            return screenModels.TryGetValue(screenName, out var value) ? value : null;
         }
     }
 }

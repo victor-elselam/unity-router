@@ -17,6 +17,7 @@ namespace Sample.ChangeSceneSample.Scripts
         private void Start()
         {
             navigation.Initialize();
+            navigation.NavigateToDefaultScreen();
         }
     }
 }

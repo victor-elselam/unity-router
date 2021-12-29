@@ -1,4 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
+using Elselam.UnityRouter.History;
+using Elselam.UnityRouter.Transitions;
 using System;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -24,5 +26,32 @@ namespace Elselam.UnityRouter.SceneLoad
             await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         public async UniTask LoadMainScene(Action<DiContainer> extraBindings = null) =>
             await SceneManager.LoadSceneAsync(mainSceneName, LoadSceneMode.Single);
+
+        public void LoadMainScene()
+        {
+            
+        }
+
+        public void LoadScreen(ScreenScheme enterScheme)
+        {
+
+        }
+
+        public UniTask Transition(ScreenScheme enterScheme, ScreenScheme exitScheme, ITransition transition = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ScreenScheme UnloadScreen(ScreenScheme exitScheme, bool back = false)
+        {
+            return exitScheme;
+        }
+
+        public void LoadScreen(ScreenScheme enterScheme, ITransition transition = null)
+        {
+            LoadLoadingScene();
+            LoadScene(mainSceneName);
+            UnloadLoadingScene();
+        }
     }
 }

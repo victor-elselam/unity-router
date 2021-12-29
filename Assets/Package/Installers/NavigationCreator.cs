@@ -1,5 +1,7 @@
-﻿using Elselam.UnityRouter.History;
+﻿using Assets.Package.Navigation.Scripts.Loader;
+using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.SceneLoad;
+using Elselam.UnityRouter.ScreenLoad;
 using Elselam.UnityRouter.Url;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,9 +10,11 @@ namespace Elselam.UnityRouter.Installers
 {
     public class NavigationCreator
     {
+        public static LoaderFactory LoaderFactory { get; set; }
         public static IScreenFactory ScreenFactory { get; set; }
         public static IScreenResolver ScreenResolver { get; set; }
         public static ISceneLoader SceneLoader { get; set; }
+        public static IScreenLoader ScreenLoader { get; set; }
         public static IUrlManager UrlManager { get; set; }
         public static IHistory History { get; set; }
         public static ICurrentScreen CurrentScreen { get; set; }
@@ -19,14 +23,16 @@ namespace Elselam.UnityRouter.Installers
         /// Setup Navigation dependencies with default instances. Any earlier provided instance will be respected
         /// </summary>
         /// <param name="settings"></param>
-        public static void Setup(NavigationSettings settings, Transform screensContainer)
+        public static void Setup(NavigationSettings settings, List<IScreenRegistry> screenList, Transform screensContainer)
         {
             CurrentScreen ??= new CurrentScreen();
             ScreenFactory ??= new DefaultScreenFactory(screensContainer);
             History ??= new HistoryManager();
             UrlManager ??= new UrlManager(settings.AppUrlDomain, History);
-            ScreenResolver ??= new ScreenResolver(History, settings.DefaultScreen.ScreenRegistry, UrlManager);
-            SceneLoader ??= new DISceneLoader(settings.LoadingSceneName, settings.MainSceneName, null);
+            ScreenResolver ??= new ScreenResolver(screenList, ScreenFactory, History, settings.DefaultScreen, UrlManager);
+            SceneLoader ??= new DefaultSceneLoader(settings.LoadingSceneName, settings.MainSceneName);
+            ScreenLoader ??= new ScreenLoader(UrlManager, ScreenResolver);
+            LoaderFactory ??= new LoaderFactory(SceneLoader, ScreenLoader);
         }
 
         /// <summary>
@@ -35,9 +41,9 @@ namespace Elselam.UnityRouter.Installers
         /// </summary>
         /// <param name="screenList"></param>
         /// <returns></returns>
-        public static INavigation Create(List<IScreenRegistry> screenList)
+        public static INavigation Create()
         {
-            return new NavigationManager(screenList, ScreenFactory, ScreenResolver, SceneLoader, UrlManager, History, CurrentScreen);
+            return new NavigationManager(LoaderFactory, ScreenResolver, UrlManager, History, CurrentScreen);
         }
     }
 }

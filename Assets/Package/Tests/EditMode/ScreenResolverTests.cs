@@ -1,6 +1,7 @@
 using Elselam.UnityRouter.Domain;
 using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.Installers;
+using Elselam.UnityRouter.Tests.Mocks;
 using Elselam.UnityRouter.Url;
 using FluentAssertions;
 using NSubstitute;
@@ -30,6 +31,17 @@ namespace Elselam.UnityRouter.Tests
                 return urlProvider;
             });
 
+            Container.Bind<IScreenFactory>()
+               .FromMethod(_ =>
+               {
+                   var screenFactory = Substitute.For<IScreenFactory>();
+                   screenFactory
+                       .Create(Arg.Any<IScreenRegistry>())
+                       .Returns(info => Container.ResolveId<IScreenModel>(info.Arg<IScreenRegistry>().ScreenId));
+                   return screenFactory;
+               })
+               .AsSingle();
+
             Container.Bind<IUrlManager>()
                 .To<UrlManager>()
                 .AsSingle();
@@ -47,6 +59,7 @@ namespace Elselam.UnityRouter.Tests
                 .To<ScreenResolver>()
                 .AsSingle();
 
+            ScreenMocks.RegisterScreensModels(Container);
             Container.Inject(this);
         }
 
@@ -55,6 +68,8 @@ namespace Elselam.UnityRouter.Tests
         {
             this.screenResolver = screenResolver;
             this.history = history;
+
+            screenResolver.Initialize();
         }
 
         [Test]
@@ -88,6 +103,48 @@ namespace Elselam.UnityRouter.Tests
             var result = screenResolver.ResolveScheme();
 
             result.ScreenId.Should().Be("MockScreenB");
+        }
+
+        [Test]
+        public void GetScreenName_ValidType_ReturnScreenName()
+        {
+            var name = screenResolver.GetScreenName(typeof(ScreenAInteractor));
+
+            name.Should().Be("MockScreenA");
+        }
+
+        [Test]
+        public void GetScreenName_InvalidType_ReturnStringEmpty()
+        {
+            var name = screenResolver.GetScreenName(typeof(UnregisteredScreenInteractor));
+
+            name.Should().BeNull();
+        }
+
+        [Test]
+        public void GetScreenModel_InvalidScreen_ReturnNull()
+        {
+            var model = screenResolver.GetScreenModel("invalidScreenName");
+
+            model.Should().BeNull();
+        }
+
+        [Test]
+        public void GetScreenModel_EmptyName_ReturnNull()
+        {
+            var model = screenResolver.GetScreenModel(string.Empty);
+
+            model.Should().BeNull();
+        }
+
+        [Test]
+        public void GetScreenModel_ValidScreen_ReturnModel()
+        {
+            var model = screenResolver.GetScreenModel("MockScreenA");
+
+            model.Should().NotBeNull();
+            model.ScreenId.Should().Be("MockScreenA");
+            model.Interactor.GetType().Should().Be(typeof(ScreenAInteractor));
         }
     }
 }
