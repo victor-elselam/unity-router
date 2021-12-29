@@ -17,7 +17,7 @@ jobs:
           restore-keys: |
             Library-
       - run: |
-          rm -rf ${{matrix.projectPath}}\Assets\Package\Samples~
-          cp -avr ${{matrix.projectPath}}\Assets\Package\Samples ${{matrix.projectPath}}\Assets\Package\Samples~
+          rm -rf ${{matrix.projectPath}}/Assets/Package/Samples~
+          cp -avr ${{matrix.projectPath}}/Assets/Package/Samples ${{matrix.projectPath}}/Assets/Package/Samples~
           git add -all
           git commit -m Creating Samples Folder
