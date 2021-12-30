@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
 
   testAllModes:
-    name: Test in ${{ matrix.testMode }}
+    name: Test ${{ matrix.testMode }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -14,15 +14,18 @@ jobs:
           - editmode
     steps:
       - uses: actions/checkout@v2
+        name: Checkout in ${{ github.ref_name }}
         with:
           lfs: true
       - uses: actions/cache@v2
+        name: Caching
         with:
-          path: ${{ matrix.projectPath }}/Library
-          key: Library-${{ matrix.projectPath }}
+          path: /Library
+          key: Library-
           restore-keys: |
             Library-
       - uses: game-ci/unity-test-runner@v2
+        name: Running Tests - ${{ matrix.testMode }}
         id: tests
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -33,6 +36,7 @@ jobs:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: ${{ matrix.testMode }} Test Results
       - uses: actions/upload-artifact@v2
+        name: Uploading Results - ${{ matrix.testMode }}
         if: always()
         with:
           name: Test results for ${{ matrix.testMode }}

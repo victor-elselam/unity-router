@@ -1,0 +1,26 @@
+name: Release
+
+on: [release]
+
+jobs:
+  copy-samples-folder:
+    name: Copying Samples folder
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout
+      - run: |
+          git config --global user.email "elselam.bot@gmail.com"
+          git config --global user.name "Github Bot"
+        name: Setup git user
+      - run: rm -rf $PWD/Assets/Package/Samples~
+        name: Delete older Samples~ folder
+      - run: cp -fr $PWD/Assets/Package/Samples $PWD/Assets/Package/Samples~
+        name: Clone Samples to Samples~
+      - run: |
+          git add --all
+          if [ -n "$(git status --porcelain)" ]; then
+          git commit -m "Creating Samples Folder"
+          git push
+          fi
+        name: Commit Changes
