@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 780eefdf2cdc438f96fc81d38480bdfd, type: 3}
+  m_Name: ChangeSceneScreensInstaller
+  m_EditorClassIdentifier: 
+  screens:
+  - {fileID: 11400000, guid: 80c0b7f5a46c4463facd92a65b431114, type: 2}
+  - {fileID: 11400000, guid: 9b8a5202f53e649b1ab2b343f81efbba, type: 2}
