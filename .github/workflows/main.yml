@@ -13,19 +13,19 @@ jobs:
         testMode:
           - editmode
     steps:
-      - name: Checkout in ${{ github.ref_name }}
       - uses: actions/checkout@v2
+        name: Checkout in ${{ github.ref_name }}
         with:
           lfs: true
-      - name: Caching
       - uses: actions/cache@v2
+        name: Caching
         with:
           path: /Library
           key: Library-
           restore-keys: |
             Library-
-      - name: Running Tests - ${{ matrix.testMode }}
       - uses: game-ci/unity-test-runner@v2
+        name: Running Tests - ${{ matrix.testMode }}
         id: tests
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -35,8 +35,8 @@ jobs:
           artifactsPath: ${{ matrix.testMode }}-artifacts
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           checkName: ${{ matrix.testMode }} Test Results
-      - name: Uploading Results - ${{ matrix.testMode }}
       - uses: actions/upload-artifact@v2
+        name: Uploading Results - ${{ matrix.testMode }}
         if: always()
         with:
           name: Test results for ${{ matrix.testMode }}
