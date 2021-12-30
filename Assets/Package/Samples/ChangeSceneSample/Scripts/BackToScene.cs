@@ -11,7 +11,7 @@ namespace Sample.ChangeSceneSample.Scripts
         public void Construct(INavigation navigation)
         {
             GetComponent<Button>().onClick.AddListener(
-                () => navigation.BackToMainScene());
+                () => navigation.BackToLastScreen());
         }
     }
 }
