@@ -10,8 +10,8 @@ jobs:
       - uses: actions/checkout@v2
         name: Checkout
       - run: |
-          git config --global user.email "dev.victorelselam@gmail.com"
-          git config --global user.name "Elselam-CI/CD"
+          git config --global user.email "elselam.bot@gmail.com"
+          git config --global user.name "Github Bot"
         name: Setup git user
       - run: rm -rf $PWD/Assets/Package/Samples~
         name: Delete older Samples~ folder
