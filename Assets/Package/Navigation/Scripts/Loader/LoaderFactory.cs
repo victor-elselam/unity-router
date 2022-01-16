@@ -43,9 +43,9 @@ namespace Assets.Package.Navigation.Scripts.Loader
                 if (CanSceneBeLoaded(targetId) && CanSceneBeLoaded(exitId))
                     return sceneToScene;
                 else if (CanSceneBeLoaded(targetId) && !CanSceneBeLoaded(exitId))
-                    return sceneToScreen;
-                else if (!CanSceneBeLoaded(targetId) && CanSceneBeLoaded(exitId))
                     return screenToScene;
+                else if (!CanSceneBeLoaded(targetId) && CanSceneBeLoaded(exitId))
+                    return sceneToScreen;
                 else
                     return screenToScreen;
             }

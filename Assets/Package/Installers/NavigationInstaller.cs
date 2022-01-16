@@ -1,4 +1,5 @@
-﻿using Elselam.UnityRouter.Domain;
+﻿using Assets.Package.Navigation.Scripts.Loader;
+using Elselam.UnityRouter.Domain;
 using Elselam.UnityRouter.Extensions;
 using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.SceneLoad;
@@ -19,6 +20,10 @@ namespace Elselam.UnityRouter.Installers
         {
             Container.Bind<IScreenRegistry>()
                 .FromInstance(navigationSettings.DefaultScreen)
+                .AsSingle();
+
+            Container.Bind<ILoaderFactory>()
+                .To<LoaderFactory>()
                 .AsSingle();
 
             Container.Bind<IScreenFactory>()

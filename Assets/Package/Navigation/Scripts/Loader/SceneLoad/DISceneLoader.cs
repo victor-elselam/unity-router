@@ -24,11 +24,15 @@ namespace Elselam.UnityRouter.SceneLoad
 
         public async UniTask LoadLoadingScene() =>
             await sceneLoader.LoadSceneAsync(loadingSceneName, LoadSceneMode.Additive);
-        public async UniTask LoadScene(string sceneName, Action<DiContainer> extraBindings = null) =>
-            await sceneLoader.LoadSceneAsync(sceneName, LoadSceneMode.Single, extraBindings);
 
+        public async UniTask LoadScene(string sceneName, Action<DiContainer> extraBindings = null)
+        {
+            await UnloadScene(SceneManager.GetActiveScene().name);
+            await sceneLoader.LoadSceneAsync(sceneName, LoadSceneMode.Additive, extraBindings);
+        }
 
         public async UniTask UnloadLoadingScene() => await UnloadScene(loadingSceneName);
+
         public async UniTask UnloadScene(string sceneName) => await SceneManager.UnloadSceneAsync(sceneName);
 
         public void LoadMainScene()

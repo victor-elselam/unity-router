@@ -153,7 +153,9 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
+    Android: com.Elselam.unityrouter
     Standalone: com.Elselam.unity-router
+    iPhone: com.Elselam.unity-router
   buildNumber:
     Standalone: 0
     iPhone: 0

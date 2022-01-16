@@ -9,7 +9,7 @@ namespace Elselam.UnityRouter.Installers
     {
         [SerializeField] private AppUrlDomain appUrlDomain;
         [SerializeField] private ScreenRegistryObject defaultScreen;
-        [SerializeField] private string loadingSceneName;
+        [SerializeField] private string loadingSceneName; //TODO: create a scene dragger inspector
         [SerializeField] private string mainSceneName;
 
         public IUrlDomainProvider AppUrlDomain => appUrlDomain;

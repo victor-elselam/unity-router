@@ -188,6 +188,14 @@ namespace Elselam.UnityRouter.Tests
             scheme.Should().BeNull();
         }
 
+        [Test]
+        public void UnloadScreen_WithNullScheme_ReturnNull()
+        {
+            var scheme = screenLoader.UnloadScreen(null);
+
+            scheme.Should().BeNull();
+        }
+
         private ScreenScheme GetValidScreenScheme(IDictionary<string, string> parameters = null) => new ScreenScheme("", validScreen, parameters);
         private ScreenScheme GetInvalidScreenScheme(IDictionary<string, string> parameters = null) => new ScreenScheme("", invalidScreen, parameters);
         private ScreenScheme GetEmptyScreenScheme(IDictionary<string, string> parameters = null) => new ScreenScheme("", "", parameters);

@@ -5,6 +5,7 @@ using Elselam.UnityRouter.Transitions;
 using Elselam.UnityRouter.Url;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Zenject;
 
 namespace Elselam.UnityRouter.Installers
@@ -68,6 +69,8 @@ namespace Elselam.UnityRouter.Installers
             if (loading) //safe guard to avoid concurrent loadings
                 return;
             loading = true;
+
+            Debug.Log($"UnityRouter - Going from {currentScreen.Scheme?.ScreenId ?? "null"}, to {enterScheme.ScreenId}");
 
             var loader = loaderFactory.GetLoader(enterScheme.ScreenId, currentScreen.Scheme?.ScreenId);
             var exitScheme = loader.Load(enterScheme, currentScreen.Scheme, transition, back);

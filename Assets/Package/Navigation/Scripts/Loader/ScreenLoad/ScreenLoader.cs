@@ -44,6 +44,9 @@ namespace Elselam.UnityRouter.ScreenLoad
 
         public ScreenScheme UnloadScreen(ScreenScheme exitScheme, bool back = false)
         {
+            if (exitScheme == null)
+                return null;
+
             var exitScreenModel = screenResolver.GetScreenModel(exitScheme.ScreenId);
             var parameters = exitScreenModel.Interactor.OnExit();
 
