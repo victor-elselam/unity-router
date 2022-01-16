@@ -56,10 +56,10 @@ namespace Elselam.UnityRouter.Tests
                 .To<MockCurrentScreen>()
                 .AsSingle();
 
-            Container.Bind<ILoader>()
+            Container.Bind<ISpecificLoader>()
                 .FromMethod(_ =>
                 {
-                    var loader = Substitute.For<ILoader>();
+                    var loader = Substitute.For<ISpecificLoader>();
                     loader.Load(Arg.Any<ScreenScheme>(), Arg.Any<ScreenScheme>(), Arg.Any<ITransition>(), Arg.Any<bool>()).Returns(info =>
                     {
                         if (info.ArgAt<ScreenScheme>(1) == null)
@@ -68,7 +68,7 @@ namespace Elselam.UnityRouter.Tests
                     });
 
                     loader
-                    .When(s => s.Load(Arg.Any<ScreenScheme>(), Arg.Any<ScreenScheme>()))
+                    .When(s => s.Load(Arg.Any<ScreenScheme>(), Arg.Any<ScreenScheme>(), Arg.Any<ITransition>(), Arg.Any<bool>()))
                     .Do(args =>
                     {
                         enterSchemeSent = args.ArgAt<ScreenScheme>(0);
@@ -82,7 +82,7 @@ namespace Elselam.UnityRouter.Tests
                 .FromMethod(_ =>
                 {
                     var factory = Substitute.For<ILoaderFactory>();
-                    factory.GetLoader(Arg.Any<string>(), Arg.Any<string>()).Returns(_ => Container.Resolve<ILoader>());
+                    factory.GetLoader(Arg.Any<string>(), Arg.Any<string>()).Returns(_ => Container.Resolve<ISpecificLoader>());
                     return factory;
                 }).AsSingle();
 
@@ -298,7 +298,5 @@ namespace Elselam.UnityRouter.Tests
 
             enterSchemeSent.ScreenId.Should().Be(sceneName);
         }
-
-        
     }
 }

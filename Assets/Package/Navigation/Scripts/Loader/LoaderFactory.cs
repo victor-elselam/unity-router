@@ -11,10 +11,10 @@ namespace Assets.Package.Navigation.Scripts.Loader
         private ISceneLoader sceneLoader;
         private IScreenLoader screenLoader;
 
-        private ILoader sceneToScene;
-        private ILoader sceneToScreen;
-        private ILoader screenToScene;
-        private ILoader screenToScreen;
+        private ISpecificLoader sceneToScene;
+        private ISpecificLoader sceneToScreen;
+        private ISpecificLoader screenToScene;
+        private ISpecificLoader screenToScreen;
 
         public LoaderFactory(ISceneLoader sceneLoader, IScreenLoader screenLoader)
         {
@@ -29,7 +29,7 @@ namespace Assets.Package.Navigation.Scripts.Loader
 
         public bool CanSceneBeLoaded(string sceneName) => Application.CanStreamedLevelBeLoaded(sceneName);
 
-        public ILoader GetLoader(string targetId, string exitId)
+        public ISpecificLoader GetLoader(string targetId, string exitId)
         {
             if (exitId.IsNullOrEmpty())
             {

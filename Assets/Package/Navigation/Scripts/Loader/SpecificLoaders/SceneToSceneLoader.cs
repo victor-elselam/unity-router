@@ -4,7 +4,7 @@ using Elselam.UnityRouter.Transitions;
 
 namespace Assets.Package.Navigation.Scripts.Loader.SpecificLoaders
 {
-    public class SceneToSceneLoader : ILoader
+    public class SceneToSceneLoader : ISpecificLoader
     {
         private ISceneLoader sceneLoader;
 

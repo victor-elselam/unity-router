@@ -4,7 +4,7 @@ using Elselam.UnityRouter.Transitions;
 
 namespace Assets.Package.Navigation.Scripts.Loader
 {
-    public interface ITypeLoader
+    public interface IPresentationLoader
     {
         void LoadScreen(ScreenScheme enterScheme);
 

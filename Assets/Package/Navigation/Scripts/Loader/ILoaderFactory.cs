@@ -4,6 +4,6 @@ namespace Assets.Package.Navigation.Scripts.Loader
 {
     public interface ILoaderFactory
     {
-        ILoader GetLoader(string targetId, string exitId);
+        ISpecificLoader GetLoader(string targetId, string exitId);
     }
 }

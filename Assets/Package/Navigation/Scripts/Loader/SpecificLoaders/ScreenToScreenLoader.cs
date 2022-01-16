@@ -6,7 +6,7 @@ using Elselam.UnityRouter.Transitions;
 
 namespace Assets.Package.Navigation.Scripts.Loader.SpecificLoaders
 {
-    public class ScreenToScreenLoader : ILoader
+    public class ScreenToScreenLoader : ISpecificLoader
     {
         private IScreenLoader screenLoader;
 
