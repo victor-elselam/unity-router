@@ -61,7 +61,7 @@ namespace Elselam.UnityRouter.Installers
             NavigateTo(new ScreenScheme("", screenName, parameters), transition, false);
 
         public void NavigateTo(ScreenScheme enterScheme, ITransition transition = null) => NavigateTo(enterScheme, transition, false);
-        public void NavigateToDefaultScreen() => NavigateTo(screenResolver.ResolveScheme(), null, false);
+        public void NavigateToDefaultScreen() => NavigateTo(screenResolver.ResolveFirstScreen(), null, false);
 
         private void NavigateTo(ScreenScheme enterScheme, ITransition transition = null, bool back = false)
         {

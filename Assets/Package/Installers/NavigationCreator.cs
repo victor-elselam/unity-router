@@ -2,6 +2,7 @@
 using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.SceneLoad;
 using Elselam.UnityRouter.ScreenLoad;
+using Elselam.UnityRouter.Transitions;
 using Elselam.UnityRouter.Url;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Elselam.UnityRouter.Installers
         public static LoaderFactory LoaderFactory { get; set; }
         public static IScreenFactory ScreenFactory { get; set; }
         public static IScreenResolver ScreenResolver { get; set; }
+        public static ITransition DefaultTransition { get; set; }
         public static ISceneLoader SceneLoader { get; set; }
         public static IScreenLoader ScreenLoader { get; set; }
         public static IUrlManager UrlManager { get; set; }
@@ -30,8 +32,9 @@ namespace Elselam.UnityRouter.Installers
             History ??= new HistoryManager();
             UrlManager ??= new UrlManager(settings.AppUrlDomain, History);
             ScreenResolver ??= new ScreenResolver(screenList, ScreenFactory, History, settings.DefaultScreen, UrlManager);
+            DefaultTransition ??= new DefaultTransition();
             SceneLoader ??= new DefaultSceneLoader(settings.LoadingSceneName, settings.MainSceneName);
-            ScreenLoader ??= new ScreenLoader(UrlManager, ScreenResolver);
+            ScreenLoader ??= new ScreenLoader(UrlManager, ScreenResolver, DefaultTransition);
             LoaderFactory ??= new LoaderFactory(SceneLoader, ScreenLoader);
         }
 

@@ -5,6 +5,6 @@ namespace Assets.Package.Navigation.Scripts.Loader.SpecificLoaders
 {
     public interface ISpecificLoader
     {
-        ScreenScheme Load(ScreenScheme enterScheme, ScreenScheme exitSheme = null, ITransition transition = null, bool back = false);
+        ScreenScheme Load(ScreenScheme enterScheme, ScreenScheme exitScheme = null, ITransition transition = null, bool back = false);
     }
 }

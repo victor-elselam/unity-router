@@ -11,11 +11,7 @@ namespace Elselam.UnityRouter.Tests.Mocks
     {
         public int OnExitCalled;
 
-        public override void OnEnter()
-        {
-        }
-
-        public override void WithParameters(IDictionary<string, string> parameters)
+        public override void OnEnter(IDictionary<string, string> parameters)
         {
         }
 
@@ -44,14 +40,10 @@ namespace Elselam.UnityRouter.Tests.Mocks
         public int PageIndex = 0;
         public int OnEnterCalled = 0;
 
-        public override void OnEnter()
-        {
-            OnEnterCalled++;
-        }
-
-        public override void WithParameters(IDictionary<string, string> parameters)
+        public override void OnEnter(IDictionary<string, string> parameters)
         {
             PageIndex = int.Parse(parameters["PageIndex"]);
+            OnEnterCalled++;
         }
 
         public override IDictionary<string, string> OnExit()
@@ -83,7 +75,7 @@ namespace Elselam.UnityRouter.Tests.Mocks
         public float ItemLength = 0;
         public Vector3 ItemPosition = Vector3.zero;
 
-        public override void WithParameters(IDictionary<string, string> parameters)
+        public override void OnEnter(IDictionary<string, string> parameters)
         {
             ItemLength = float.Parse(parameters["ItemLength"]);
             ItemPosition = JsonUtility.FromJson<Vector3>(parameters["ItemPosition"]);

@@ -13,11 +13,11 @@ namespace Elselam.UnityRouter.ScreenLoad
         private IScreenResolver screenResolver;
         private ITransition defaultTransition;
 
-        public ScreenLoader(IUrlManager urlManager, IScreenResolver screenResolver)
+        public ScreenLoader(IUrlManager urlManager, IScreenResolver screenResolver, ITransition defaultTransition)
         {
             this.urlManager = urlManager;
             this.screenResolver = screenResolver;
-            defaultTransition = new DefaultTransition();
+            this.defaultTransition = defaultTransition;
         }
 
         public void LoadScreen(ScreenScheme enterScheme)
@@ -26,17 +26,19 @@ namespace Elselam.UnityRouter.ScreenLoad
             if (enterScreenModel == null)
                 throw new NavigationException($"Invalid target screen: {enterScheme.ScreenId}");
 
-            if (enterScheme.Parameters?.Count > 0)
-                enterScreenModel.Interactor.WithParameters(enterScheme.Parameters);
-
-            enterScreenModel.Interactor.OnEnter();
+            enterScreenModel.Interactor.OnEnter(enterScheme.Parameters);
         }
 
         public async UniTask Transition(ScreenScheme enterScheme, ScreenScheme exitScheme = null, ITransition transition = null)
         {
+            var enterId = enterScheme?.ScreenId ?? "";
+            var exitId = exitScheme?.ScreenId ?? "";
+            if (enterId == exitId)
+                return;
+
             transition ??= defaultTransition;
-            var enter = screenResolver.GetScreenModel(enterScheme.ScreenId).Presenter;
-            var exit = screenResolver.GetScreenModel(exitScheme?.ScreenId)?.Presenter;
+            var enter = screenResolver.GetScreenModel(enterId).Presenter;
+            var exit = screenResolver.GetScreenModel(exitId)?.Presenter;
             await transition.Transite(enter, exit);
         }
 
@@ -44,10 +46,10 @@ namespace Elselam.UnityRouter.ScreenLoad
         {
             var exitScreenModel = screenResolver.GetScreenModel(exitScheme.ScreenId);
             var parameters = exitScreenModel.Interactor.OnExit();
+
             if (!back)
             {
-                var name = screenResolver.GetScreenName(exitScreenModel.Interactor.GetType());
-                var url = urlManager.BuildToString(name, parameters);
+                var url = urlManager.BuildToString(exitScreenModel.ScreenId, parameters);
                 return urlManager.Deserialize(url);
             }
 

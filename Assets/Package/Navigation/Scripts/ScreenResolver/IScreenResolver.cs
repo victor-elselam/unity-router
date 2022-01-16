@@ -9,7 +9,7 @@ namespace Elselam.UnityRouter.Installers
         /// Resolve deep link received
         /// </summary>
         /// <returns></returns>
-        ScreenScheme ResolveScheme();
+        ScreenScheme ResolveFirstScreen();
 
         /// <summary>
         /// TODO: Remove this from interface and mock the event
@@ -24,6 +24,11 @@ namespace Elselam.UnityRouter.Installers
 
         string GetScreenName(Type controllerType);
 
-        IScreenModel GetScreenModel(string screenName);
+        /// <summary>
+        /// ScreenModel of the specified Screen
+        /// </summary>
+        /// <param name="screenId">Id of the screen</param>
+        /// <returns>Screen Model</returns>
+        IScreenModel GetScreenModel(string screenId);
     }
 }

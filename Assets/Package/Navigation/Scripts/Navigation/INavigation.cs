@@ -3,7 +3,6 @@ using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.Transitions;
 using System;
 using System.Collections.Generic;
-using Zenject;
 using JetBrains.Annotations;
 
 namespace Elselam.UnityRouter.Installers

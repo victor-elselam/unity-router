@@ -1,4 +1,3 @@
-using Elselam.UnityRouter.Domain;
 using Elselam.UnityRouter.History;
 
 namespace Elselam.UnityRouter.Installers

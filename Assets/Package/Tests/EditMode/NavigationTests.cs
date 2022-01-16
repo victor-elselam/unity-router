@@ -2,8 +2,6 @@ using Cysharp.Threading.Tasks;
 using Elselam.UnityRouter.Domain;
 using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.Installers;
-using Elselam.UnityRouter.SceneLoad;
-using Elselam.UnityRouter.ScreenLoad;
 using Elselam.UnityRouter.Transitions;
 using Elselam.UnityRouter.Url;
 using Elselam.UnityRouter.Tests.Mocks;
@@ -24,12 +22,9 @@ namespace Elselam.UnityRouter.Tests
     public class NavigationTests : ZenjectUnitTestFixture
     {
         private List<ScreenScheme> historyList;
-        private ISceneLoader sceneLoader;
         private IHistory history;
         private IUrlManager urlManager;
         private ICurrentScreen currentScreen;
-        private ILoaderFactory loaderFactory;
-        private IScreenLoader screenLoader;
         private INavigation navigation;
 
         private ScreenScheme enterSchemeSent = null;
@@ -49,8 +44,7 @@ namespace Elselam.UnityRouter.Tests
                         .Do(callInfo => historyList.Add(callInfo.Arg<ScreenScheme>()));
                     history.Add(Arg.Any<ScreenScheme>()).Returns(true);
                     return history;
-                })
-                .AsSingle();
+                }).AsSingle();
 
             Container.Bind<ICurrentScreen>()
                 .To<MockCurrentScreen>()
@@ -91,11 +85,10 @@ namespace Elselam.UnityRouter.Tests
                 {
                     var resolver = Substitute.For<IScreenResolver>();
                     var registries = Container.Resolve<List<IScreenRegistry>>();
-                    resolver.ResolveScheme().Returns(_ => new ScreenScheme("", "MockScreenA"));
+                    resolver.ResolveFirstScreen().Returns(_ => new ScreenScheme("", "MockScreenA"));
                     resolver.GetScreenName(Arg.Any<Type>()).Returns(arg => registries.FirstOrDefault(s => s.ScreenInteractor == arg.Arg<Type>())?.ScreenId);
                     return resolver;
-                })
-                .AsSingle();
+                }).AsSingle();
 
             Container.Bind<IUrlDomainProvider>()
                 .FromMethod(_ =>
@@ -141,13 +134,11 @@ namespace Elselam.UnityRouter.Tests
             IHistory history,
             IUrlManager urlManager, 
             ICurrentScreen currentScreen,
-            ILoaderFactory loaderFactory,
             INavigation navigation)
         {
             this.history = history;
             this.urlManager = urlManager;
             this.currentScreen = currentScreen;
-            this.loaderFactory = loaderFactory;
             this.navigation = navigation;
 
             navigation.Initialize();
@@ -185,6 +176,16 @@ namespace Elselam.UnityRouter.Tests
             navigation.NavigateTo<CustomScreenInteractor>();
 
             history.Received(1).Add(Arg.Any<ScreenScheme>());
+        }
+
+        [Test]
+        public void NavigateTo_ValidScreen_SetCurrentScreen()
+        {
+            navigation.NavigateTo<SameScreenInteractor>();
+
+            navigation.NavigateTo<CustomScreenInteractor>();
+
+            currentScreen.Scheme.Should().Be(enterSchemeSent);
         }
 
         [Test]

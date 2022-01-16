@@ -3,6 +3,7 @@ using Elselam.UnityRouter.Extensions;
 using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.SceneLoad;
 using Elselam.UnityRouter.ScreenLoad;
+using Elselam.UnityRouter.Transitions;
 using Elselam.UnityRouter.Url;
 using UnityEngine;
 using Zenject;
@@ -36,6 +37,10 @@ namespace Elselam.UnityRouter.Installers
                 .To<DISceneLoader>()
                 .AsSingle()
                 .WithArguments(navigationSettings.LoadingSceneName, navigationSettings.MainSceneName);
+
+            Container.Bind<ITransition>()
+                .To<DefaultTransition>()
+                .AsSingle();
 
             Container.Bind<IScreenLoader>()
                 .To<ScreenLoader>()

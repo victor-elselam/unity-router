@@ -4,10 +4,7 @@ namespace Elselam.UnityRouter.Domain
 {
     public abstract class BaseScreenInteractor : IScreenInteractor
     {
-        public virtual void OnEnter()
-        {
-        }
-        public virtual void WithParameters(IDictionary<string, string> parameters)
+        public virtual void OnEnter(IDictionary<string, string> parameters)
         {
         }
 

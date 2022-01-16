@@ -77,21 +77,9 @@ namespace Elselam.UnityRouter.Tests
         {
             var firstScreen = Container.Resolve<IScreenRegistry>().ScreenId;
 
-            var result = screenResolver.ResolveScheme();
+            var result = screenResolver.ResolveFirstScreen();
 
             result.ScreenId.Should().Be(firstScreen);
-        }
-
-        [Test]
-        public void InitializeNavigation_WithHistory_LoadLastHistoryScreenAsFirstScreen()
-        {
-            var expectedFirstScreenName = "MockScreenB";
-            history.HasHistory.Returns(true);
-            history.Back().Returns(new ScreenScheme("", expectedFirstScreenName));
-
-            var result = screenResolver.ResolveScheme();
-
-            result.ScreenId.Should().Be(expectedFirstScreenName);
         }
 
         [Test]
@@ -100,7 +88,7 @@ namespace Elselam.UnityRouter.Tests
             var deeplink = "domain://MockScreenB?play_all=1&shuffle=1";
             screenResolver.ApplicationOnDeepLinkActivated(deeplink);
 
-            var result = screenResolver.ResolveScheme();
+            var result = screenResolver.ResolveFirstScreen();
 
             result.ScreenId.Should().Be("MockScreenB");
         }

@@ -39,17 +39,16 @@ namespace Elselam.UnityRouter.Installers
             foreach (var screenRegistry in screenRegistries)
                 screenModels[screenRegistry.ScreenId] = screenFactory.Create(screenRegistry);
 
+            //TODO: we need to create an event to warn navigation when a deep link occurs in the middle of the session
             Application.deepLinkActivated += ApplicationOnDeepLinkActivated;
             if (!string.IsNullOrEmpty(Application.absoluteURL))
-            {
                 ApplicationOnDeepLinkActivated(Application.absoluteURL);
-            }
         }
 
         //TODO: remove this method from interface, we need to make an adapter to Unity Application.deepLinkActivated
         public void ApplicationOnDeepLinkActivated(string deepLinkUrl) => this.deepLinkUrl = deepLinkUrl;
 
-        public ScreenScheme ResolveScheme()
+        public ScreenScheme ResolveFirstScreen()
         {
             if (!string.IsNullOrEmpty(deepLinkUrl))
             {
@@ -57,16 +56,17 @@ namespace Elselam.UnityRouter.Installers
                 deepLinkUrl = null;
                 return scheme;
             }
-            return history.HasHistory ? history.Back() : urlManager.BuildToScheme(defaultScreen.ScreenId, null);
+
+            return urlManager.BuildToScheme(defaultScreen.ScreenId, null);
         }
 
         public string GetScreenName(Type controllerType) => screenRegistries.FirstOrDefault(s => s.ScreenInteractor == controllerType)?.ScreenId;
 
-        public IScreenModel GetScreenModel(string screenName)
+        public IScreenModel GetScreenModel(string screenId)
         {
-            if (screenName.IsNullOrEmpty())
+            if (screenId.IsNullOrEmpty())
                 return null;
-            return screenModels.TryGetValue(screenName, out var value) ? value : null;
+            return screenModels.TryGetValue(screenId, out var value) ? value : null;
         }
     }
 }

@@ -16,13 +16,13 @@ namespace Assets.Package.Navigation.Scripts.Loader.SpecificLoaders
             this.sceneLoader = sceneLoader;
         }
 
-        public ScreenScheme Load(ScreenScheme enterScheme, ScreenScheme exitSheme = null, ITransition transition = null, bool back = false)
+        public ScreenScheme Load(ScreenScheme enterScheme, ScreenScheme exitScheme = null, ITransition transition = null, bool back = false)
         {
             sceneLoader.LoadMainScene();
             screenLoader.LoadScreen(enterScheme);
             screenLoader.Transition(enterScheme, null, transition);
 
-            return exitSheme;
+            return exitScheme;
         }
     }
 }

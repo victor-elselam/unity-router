@@ -1,12 +1,13 @@
 ﻿using Elselam.UnityRouter.Extensions;
 using FluentAssertions;
 using NUnit.Framework;
+using System.Collections.Generic;
 using Zenject;
 
 namespace Elselam.UnityRouter.Tests
 {
     [TestFixture]
-    public class ParameterTests : ZenjectUnitTestFixture
+    public class ParameterManagerTests : ZenjectUnitTestFixture
     {
         private IParameterManager parameterManager;
 
@@ -130,6 +131,26 @@ namespace Elselam.UnityRouter.Tests
             var defaultValue = 3;
 
             var result = parameterManager.GetParamOfType<int>(parameters, "count", defaultValue);
+
+            result.Should().Be(3);
+        }
+
+        [Test]
+        public void GetParameterOfType_NullParameters_ReturnDefault()
+        {
+            var defaultValue = 3;
+
+            var result = parameterManager.GetParamOfType<int>(null, "count", defaultValue);
+
+            result.Should().Be(3);
+        }
+
+        [Test]
+        public void GetParameterOfType_EmptyParameters_ReturnDefault()
+        {
+            var defaultValue = 3;
+
+            var result = parameterManager.GetParamOfType<int>(new Dictionary<string, string>(), "count", defaultValue);
 
             result.Should().Be(3);
         }
