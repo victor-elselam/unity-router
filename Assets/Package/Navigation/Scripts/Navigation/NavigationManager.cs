@@ -70,6 +70,7 @@ namespace Elselam.UnityRouter.Installers
                 return;
             loading = true;
 
+            //TODO: add a logger interface, so users can use their own logger and get info about navigations
             Debug.Log($"UnityRouter - Going from {currentScreen.Scheme?.ScreenId ?? "null"}, to {enterScheme.ScreenId}");
 
             var loader = loaderFactory.GetLoader(enterScheme.ScreenId, currentScreen.Scheme?.ScreenId);
