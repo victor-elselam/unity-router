@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Package.Samples.ChangeSceneSample
 {
-    [CreateAssetMenu(fileName = "AppStartInstaller", menuName = "Elselam/UNavScreen/Installers/AppStartInstaller")]
+    [CreateAssetMenu(fileName = "AppStartInstaller", menuName = "Elselam/UnityRouter/Installers/AppStartInstaller")]
     public class AppStartInstaller : ScriptableObjectInstaller
     {
         public override void InstallBindings()

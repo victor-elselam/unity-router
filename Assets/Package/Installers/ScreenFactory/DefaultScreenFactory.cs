@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Elselam.UnityRouter.Domain;
+using UnityEngine;
 
 namespace Elselam.UnityRouter.Installers
 {
@@ -14,7 +15,9 @@ namespace Elselam.UnityRouter.Installers
         public IScreenModel Create(IScreenRegistry screenRegistry)
         {
             var presenter = Object.Instantiate(screenRegistry.ScreenPrefab, screensContainer);
-            return new ScreenModel(screenRegistry.ScreenId, null, presenter, null);
+            var interactor = presenter.GetComponent<IScreenInteractor>();
+            presenter.Disable();
+            return new ScreenModel(screenRegistry.ScreenId, interactor, presenter, null);
         }
     }
 }
