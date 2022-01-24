@@ -20,7 +20,7 @@ namespace Sample.ChangeSceneSample.Screens.ScreenB.Interactor
             this.parameterManager = parameterManager;
         }
 
-        public override void WithParameters(IDictionary<string, string> parameters)
+        public override void OnEnter(IDictionary<string, string> parameters)
         {
             elementPosition = parameterManager.GetParamOfType<float>(parameters, "elementPosition", defaultValue: elementPosition);
             presenter.SliderPosition(elementPosition);

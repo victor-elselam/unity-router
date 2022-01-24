@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Elselam.UnityRouter.Installers
 {
-    [CreateAssetMenu(fileName = "New Screens Installer", menuName = "Elselam/UnityRouter/Installers", order = 0)]
+    [CreateAssetMenu(fileName = "New Screens Installer", menuName = "Elselam/UnityRouter/Installers/Area", order = 0)]
     public class AreaInstaller : ScriptableObjectInstaller
     {
         [SerializeField] private List<ScreenRegistryObject> screens;

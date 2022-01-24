@@ -64,6 +64,8 @@ namespace Elselam.UnityRouter.Url
             return new ScreenScheme(url, screenName, paramsDictionary);
         }
 
+
+        //TODO: create keywords registration with specific actions
         private string ExtractHistoryInUrl(string url)
         {
             if (!url.Contains(HISTORY_KEY))

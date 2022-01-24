@@ -1,15 +1,9 @@
-using Elselam.UnityRouter.Domain;
 using Elselam.UnityRouter.History;
 
 namespace Elselam.UnityRouter.Installers
 {
     public interface ICurrentScreen
     {
-        /// <summary>
-        /// Interactor of the current screen
-        /// </summary>
-        IScreenInteractor Screen { get; }
-
         /// <summary>
         /// Current screen metadata
         /// </summary>
@@ -20,6 +14,6 @@ namespace Elselam.UnityRouter.Installers
         /// </summary>
         /// <param name="screenController"></param>
         /// <param name="scheme"></param>
-        void SetCurrentScreen(IScreenInteractor screenController, ScreenScheme scheme);
+        void SetCurrentScreen(ScreenScheme scheme);
     }
 }

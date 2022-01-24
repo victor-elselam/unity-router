@@ -14,6 +14,12 @@ namespace Elselam.UnityRouter.History
             Parameters = parameters;
         }
 
+        public ScreenScheme(string url, string screenId)
+        {
+            Url = url;
+            ScreenId = screenId;
+        }
+
         public string Url;
         public string ScreenId;
         public IDictionary<string, string> Parameters;

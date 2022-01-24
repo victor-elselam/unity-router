@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 
 namespace Elselam.UnityRouter.Domain
@@ -6,20 +7,15 @@ namespace Elselam.UnityRouter.Domain
     {
         /// <summary>
         /// Notify Screen Interactor that this screen is entering.
-        /// At this call, screen parameters is already available
+        /// Inject parameters from last screen or deep link, if any.
         /// </summary>
-        void OnEnter();
+        /// <param name="parameters">Parameters sent from last screen or deep link. Can be null!</param>
+        void OnEnter([CanBeNull] IDictionary<string, string> parameters);
 
         /// <summary>
         /// Notify Screen Interactor that this screen is leaving.
         /// </summary>
         /// <returns>Screen exit parameters to save current state</returns>
         IDictionary<string, string> OnExit();
-
-        /// <summary>
-        /// Inject parameters from last screen or deep link
-        /// </summary>
-        /// <param name="parameters"></param>
-        void WithParameters(IDictionary<string, string> parameters);
     }
 }

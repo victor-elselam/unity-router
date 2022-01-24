@@ -1,4 +1,5 @@
 using Elselam.UnityRouter.History;
+using System;
 
 namespace Elselam.UnityRouter.Installers
 {
@@ -8,7 +9,7 @@ namespace Elselam.UnityRouter.Installers
         /// Resolve deep link received
         /// </summary>
         /// <returns></returns>
-        ScreenScheme ResolveScheme();
+        ScreenScheme ResolveFirstScreen();
 
         /// <summary>
         /// TODO: Remove this from interface and mock the event
@@ -20,5 +21,14 @@ namespace Elselam.UnityRouter.Installers
         /// Start to listen to deep links. Activate immediately if we already have a deep link in system cache
         /// </summary>
         void Initialize();
+
+        string GetScreenName(Type controllerType);
+
+        /// <summary>
+        /// ScreenModel of the specified Screen
+        /// </summary>
+        /// <param name="screenId">Id of the screen</param>
+        /// <returns>Screen Model</returns>
+        IScreenModel GetScreenModel(string screenId);
     }
 }

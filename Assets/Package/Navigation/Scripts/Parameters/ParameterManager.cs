@@ -20,6 +20,9 @@ namespace Elselam.UnityRouter.Extensions
 
         public T GetParamOfType<T>(IDictionary<string, string> parameters, string key, T defaultValue = default)
         {
+            if (parameters.IsNullOrEmpty())
+                return defaultValue;
+
             var hasValue = parameters.TryGetValue(key, out string result);
             if (!hasValue)
                 return defaultValue;
