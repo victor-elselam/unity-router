@@ -20,7 +20,7 @@ namespace Elselam.UnityRouter.ScreenLoad
             this.defaultTransition = defaultTransition;
         }
 
-        public void LoadScreen(ScreenScheme enterScheme)
+        public async UniTask LoadScreen(ScreenScheme enterScheme)
         {
             var enterScreenModel = screenResolver.GetScreenModel(enterScheme.ScreenId);
             if (enterScreenModel == null)
@@ -37,7 +37,7 @@ namespace Elselam.UnityRouter.ScreenLoad
                 return;
 
             transition ??= defaultTransition;
-            var enter = screenResolver.GetScreenModel(enterId).Presenter;
+            var enter = screenResolver.GetScreenModel(enterId)?.Presenter;
             var exit = screenResolver.GetScreenModel(exitId)?.Presenter;
             await transition.Transite(enter, exit);
         }

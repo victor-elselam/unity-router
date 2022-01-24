@@ -6,7 +6,7 @@ namespace Assets.Package.Navigation.Scripts.Loader
 {
     public interface IPresentationLoader
     {
-        void LoadScreen(ScreenScheme enterScheme);
+        UniTask LoadScreen(ScreenScheme enterScheme);
 
         ScreenScheme UnloadScreen(ScreenScheme exitScheme, bool back = false);
 

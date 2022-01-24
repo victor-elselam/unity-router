@@ -15,7 +15,7 @@ MonoBehaviour:
   ScreenRegistry:
     screenId: ScreenA
     interactor: {fileID: 11500000, guid: a1cbfae1cbfb0814fb45b6ffcaf1f8d4, type: 3}
-    interactorTypeName: ScreenAPresenter
+    interactorTypeName: ScreenA
     presenter: {fileID: 6165176041884502982, guid: 19ec9d9e91e80294bbf5656e2f349cba, type: 3}
     presenterTypeName: ScreenAPresenter
     view: {fileID: 0}

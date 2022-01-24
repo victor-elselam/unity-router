@@ -61,7 +61,6 @@ namespace Elselam.UnityRouter.Installers
             Navigation = navigation;
 
             Navigation.Initialize();
-            Navigation.NavigateToDefaultScreen();
         }
     }
 }

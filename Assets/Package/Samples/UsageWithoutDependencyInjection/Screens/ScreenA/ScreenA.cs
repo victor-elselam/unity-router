@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 namespace Sample.UsageWithoutDependencyInjection.Screens.ScreenA.Presenter
 {
-    public class ScreenAPresenter : BaseScreen
+    public class ScreenA : BaseScreen
     {
         [SerializeField] private Button nextScreenButton;
 
         public void Start()
         {
-            nextScreenButton.onClick.AddListener(() => Elselam.UnityRouter.Installers.UnityRouter.Navigation.NavigateTo<ScreenBPresenter>());
+            nextScreenButton.onClick.AddListener(() => Elselam.UnityRouter.Installers.UnityRouter.Navigation.NavigateTo<ScreenB.Presenter.ScreenB>());
         }
     }
 }

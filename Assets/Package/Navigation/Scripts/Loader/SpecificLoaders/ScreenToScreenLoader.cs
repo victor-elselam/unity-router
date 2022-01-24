@@ -15,7 +15,7 @@ namespace Assets.Package.Navigation.Scripts.Loader.SpecificLoaders
             this.screenLoader = screenLoader;
         }
 
-        public ScreenScheme Load(ScreenScheme enterScheme, ScreenScheme exitScheme = null, ITransition transition = null, bool back = false)
+        public async UniTask<ScreenScheme> Load(ScreenScheme enterScheme, ScreenScheme exitScheme = null, ITransition transition = null, bool back = false)
         {
             var returnScheme = screenLoader.UnloadScreen(exitScheme, back);
             screenLoader.Transition(enterScheme, exitScheme, transition);

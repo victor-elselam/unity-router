@@ -1,4 +1,5 @@
 using Assets.Package.Navigation.Scripts.Loader;
+using Cysharp.Threading.Tasks;
 
 namespace Elselam.UnityRouter.SceneLoad
 {
@@ -8,6 +9,6 @@ namespace Elselam.UnityRouter.SceneLoad
         /// Load the Main Scene, specified in 'Navigation Installer', in field 'mainSceneName'
         /// </summary>
         /// <returns></returns>
-        void LoadMainScene();
+        UniTask LoadMainScene();
     }
 }

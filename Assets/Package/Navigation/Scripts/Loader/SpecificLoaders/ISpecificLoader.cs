@@ -1,10 +1,11 @@
-﻿using Elselam.UnityRouter.History;
+﻿using Cysharp.Threading.Tasks;
+using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.Transitions;
 
 namespace Assets.Package.Navigation.Scripts.Loader.SpecificLoaders
 {
     public interface ISpecificLoader
     {
-        ScreenScheme Load(ScreenScheme enterScheme, ScreenScheme exitScheme = null, ITransition transition = null, bool back = false);
+        UniTask<ScreenScheme> Load(ScreenScheme enterScheme, ScreenScheme exitScheme = null, ITransition transition = null, bool back = false);
     }
 }

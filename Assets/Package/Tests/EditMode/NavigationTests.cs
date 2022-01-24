@@ -57,8 +57,8 @@ namespace Elselam.UnityRouter.Tests
                     loader.Load(Arg.Any<ScreenScheme>(), Arg.Any<ScreenScheme>(), Arg.Any<ITransition>(), Arg.Any<bool>()).Returns(info =>
                     {
                         if (info.ArgAt<ScreenScheme>(1) == null)
-                            return null;
-                        return new ScreenScheme("", "");
+                            return UniTask.Create(() => new UniTask<ScreenScheme>(null));
+                        return UniTask.Create(() => new UniTask<ScreenScheme>(new ScreenScheme("", "")));
                     });
 
                     loader

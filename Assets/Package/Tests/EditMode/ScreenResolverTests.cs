@@ -134,5 +134,17 @@ namespace Elselam.UnityRouter.Tests
             model.ScreenId.Should().Be("MockScreenA");
             model.Interactor.GetType().Should().Be(typeof(ScreenAInteractor));
         }
+
+        [Test]
+        public void InitializeNavigation_WithHistory_LoadLastHistoryScreenAsFirstScreen()
+        {
+            var expectedFirstScreenName = "MockScreenB";
+            history.HasHistory.Returns(true);
+            history.Back().Returns(new ScreenScheme("", expectedFirstScreenName));
+
+            var result = screenResolver.ResolveFirstScreen();
+
+            result.ScreenId.Should().Be(expectedFirstScreenName);
+        }
     }
 }

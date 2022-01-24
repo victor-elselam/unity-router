@@ -64,7 +64,7 @@ namespace Elselam.UnityRouter.Installers
         public void NavigateTo(ScreenScheme enterScheme, ITransition transition = null) => NavigateTo(enterScheme, transition, false);
         public void NavigateToDefaultScreen() => NavigateTo(screenResolver.ResolveFirstScreen(), null, false);
 
-        private void NavigateTo(ScreenScheme enterScheme, ITransition transition = null, bool back = false)
+        private async void NavigateTo(ScreenScheme enterScheme, ITransition transition = null, bool back = false)
         {
             if (loading) //safe guard to avoid concurrent loadings
                 return;
@@ -74,7 +74,7 @@ namespace Elselam.UnityRouter.Installers
             Debug.Log($"UnityRouter - Going from {currentScreen.Scheme?.ScreenId ?? "null"}, to {enterScheme.ScreenId}");
 
             var loader = loaderFactory.GetLoader(enterScheme.ScreenId, currentScreen.Scheme?.ScreenId);
-            var exitScheme = loader.Load(enterScheme, currentScreen.Scheme, transition, back);
+            var exitScheme = await loader.Load(enterScheme, currentScreen.Scheme, transition, back);
 
             if (!back && exitScheme != null)
                 history.Add(exitScheme);

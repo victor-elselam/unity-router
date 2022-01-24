@@ -35,14 +35,14 @@ namespace Elselam.UnityRouter.SceneLoad
 
         public async UniTask UnloadScene(string sceneName) => await SceneManager.UnloadSceneAsync(sceneName);
 
-        public void LoadMainScene()
+        public async UniTask LoadMainScene()
         {
-            Load(mainSceneName);
+            await Load(mainSceneName);
         }
 
-        public void LoadScreen(ScreenScheme enterScheme)
+        public async UniTask LoadScreen(ScreenScheme enterScheme)
         {
-            Load(enterScheme.ScreenId, container => 
+            await Load(enterScheme.ScreenId, container => 
                 container.Bind<IDictionary<string, string>>().FromInstance(enterScheme.Parameters));
         }
 
@@ -57,7 +57,7 @@ namespace Elselam.UnityRouter.SceneLoad
             return new ScreenScheme("", exitScheme.ScreenId);
         }
 
-        private async void Load(string screenId, Action<DiContainer> extraBindings = null)
+        private async UniTask Load(string screenId, Action<DiContainer> extraBindings = null)
         {
             await LoadLoadingScene();
             await LoadScene(screenId, extraBindings);

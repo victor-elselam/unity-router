@@ -8,7 +8,9 @@ using Elselam.UnityRouter.Url;
 using FluentAssertions;
 using NSubstitute;
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.TestTools;
 using Zenject;
 
 namespace Elselam.UnityRouter.Tests
@@ -123,14 +125,14 @@ namespace Elselam.UnityRouter.Tests
             screenInteractor.Received(1).OnEnter(parameters);
         }
 
-        [Test]
-        public void LoadScreen_InvalidScreen_Failure()
+        [UnityTest]
+        public IEnumerator LoadScreen_InvalidScreen_Failure() => UniTask.ToCoroutine(async () =>
         {
             NavigationException error = null;
 
             try
             {
-                screenLoader.LoadScreen(GetInvalidScreenScheme());
+                await screenLoader.LoadScreen(GetInvalidScreenScheme());
             }
             catch (NavigationException e)
             {
@@ -138,16 +140,16 @@ namespace Elselam.UnityRouter.Tests
             }
 
             error.Should().NotBeNull();
-        }
+        });
 
-        [Test]
-        public void LoadScreen_EmptyScreenId_Failure()
+        [UnityTest]
+        public IEnumerator LoadScreen_EmptyScreenId_Failure() => UniTask.ToCoroutine(async () =>
         {
             NavigationException error = null;
 
             try
             {
-                screenLoader.LoadScreen(GetEmptyScreenScheme());
+                await screenLoader.LoadScreen(GetEmptyScreenScheme());
             }
             catch (NavigationException e)
             {
@@ -155,7 +157,7 @@ namespace Elselam.UnityRouter.Tests
             }
 
             error.Should().NotBeNull();
-        }
+        });
 
         [Test]
         public void Transition_SameScreen_DontTransite()

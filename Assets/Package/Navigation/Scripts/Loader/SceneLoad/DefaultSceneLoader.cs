@@ -24,17 +24,17 @@ namespace Elselam.UnityRouter.SceneLoad
             await SceneManager.UnloadSceneAsync(loadingSceneName);
         public async UniTask LoadScene(string sceneName, Action<DiContainer> extraBindings = null) =>
             await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
-        public async UniTask LoadMainScene(Action<DiContainer> extraBindings = null) =>
-            await SceneManager.LoadSceneAsync(mainSceneName, LoadSceneMode.Single);
 
-        public void LoadMainScene()
+        public async UniTask LoadMainScene()
         {
-            
+            await LoadLoadingScene();
+            await LoadScene(mainSceneName);
         }
 
-        public void LoadScreen(ScreenScheme enterScheme)
+        public async UniTask LoadScreen(ScreenScheme enterScheme)
         {
-
+            await LoadLoadingScene();
+            await LoadScene(enterScheme.ScreenId);
         }
 
         public UniTask Transition(ScreenScheme enterScheme, ScreenScheme exitScheme, ITransition transition = null)
@@ -42,16 +42,6 @@ namespace Elselam.UnityRouter.SceneLoad
             throw new NotImplementedException();
         }
 
-        public ScreenScheme UnloadScreen(ScreenScheme exitScheme, bool back = false)
-        {
-            return exitScheme;
-        }
-
-        public void LoadScreen(ScreenScheme enterScheme, ITransition transition = null)
-        {
-            LoadLoadingScene();
-            LoadScene(mainSceneName);
-            UnloadLoadingScene();
-        }
+        public ScreenScheme UnloadScreen(ScreenScheme exitScheme, bool back = false) => exitScheme;
     }
 }
