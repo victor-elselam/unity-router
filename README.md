@@ -41,6 +41,6 @@ In both of them, maybe you'll need to add the scenes to the Build Settings. For 
 
 # Dependencies
 
-"com.boundfoxstudios.fluentassertions": "https://github.com/BoundfoxStudios/fluentassertions-unity.git#5.10.3-r5",
-"com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git#2.2.5",
+"com.boundfoxstudios.fluentassertions": "https://github.com/BoundfoxStudios/fluentassertions-unity.git#5.10.3-r5", \
+"com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git#2.2.5", \
 "com.svermeulen.extenject": "https://github.com/starikcetin/Extenject.git#9.1.0"
