@@ -4,5 +4,23 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Package/Samples/ChangeSceneSample/Scenes/ChangeSceneSample.unity
+    guid: 4eba105e2befa4f04bc65910e795d43f
+  - enabled: 1
+    path: Assets/Package/Samples/ChangeSceneSample/Scenes/LoadingScene.unity
+    guid: e009908c6303c400c89b67a49747fe51
+  - enabled: 1
+    path: Assets/Package/Samples/ChangeSceneSample/Scenes/SceneWithVideoPlayer.unity
+    guid: 993589c48b7db412698a3aeffc29cb0b
+  - enabled: 1
+    path: Assets/Package/Samples/UsageWithoutDependencyInjection/Scenes/Loading.unity
+    guid: 3985960d6d73fbb4fb6a10c996835680
+  - enabled: 1
+    path: Assets/Package/Samples/UsageWithoutDependencyInjection/Scenes/OtherScene.unity
+    guid: 9414fdca045dc674fb7874f8f6d192ca
+  - enabled: 1
+    path: Assets/Package/Samples/UsageWithoutDependencyInjection/Scenes/UsageWithoutDependencyInjection.unity
+    guid: 80a768243fc814a44b63c83c95a56a03
   m_configObjects: {}

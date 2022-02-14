@@ -1,37 +1,56 @@
-﻿using elselam.Navigation.Domain;
-using elselam.Navigation.History;
-using elselam.Navigation.Navigation;
-using elselam.Navigation.SceneLoad;
-using elselam.Navigation.Url;
+﻿using Assets.Package.Navigation.Scripts.Loader;
+using Elselam.UnityRouter.Domain;
+using Elselam.UnityRouter.Extensions;
+using Elselam.UnityRouter.History;
+using Elselam.UnityRouter.SceneLoad;
+using Elselam.UnityRouter.ScreenLoad;
+using Elselam.UnityRouter.Transitions;
+using Elselam.UnityRouter.Url;
 using UnityEngine;
 using Zenject;
 
-namespace elselam.Navigation.ScriptableObjects {
-    [CreateAssetMenu(fileName = "NavigationInstaller", menuName = "Elselam/UNavScreen/NavigationInstaller")]
-    public class NavigationInstaller : ScriptableObjectInstaller {
-        [SerializeField] private AppUrlDomain appUrlDomain;
-        [SerializeField] private ScreenRegistryObject defaultScreen;
-        [SerializeField] private string loadingSceneName;
-        [SerializeField] private string mainSceneName;
+namespace Elselam.UnityRouter.Installers
+{
+    [CreateAssetMenu(fileName = "NavigationInstaller", menuName = "Elselam/UnityRouter/Installers/Navigation")]
+    public class NavigationInstaller : ScriptableObjectInstaller
+    {
+        [SerializeField] private NavigationSettings navigationSettings;
 
-        public override void InstallBindings() {
+        public override void InstallBindings()
+        {
             Container.Bind<IScreenRegistry>()
-                     .FromInstance(defaultScreen.ScreenRegistry)
-                     .AsSingle();
+                .FromInstance(navigationSettings.DefaultScreen)
+                .AsSingle();
+
+            Container.Bind<ILoaderFactory>()
+                .To<LoaderFactory>()
+                .AsSingle();
+
+            Container.Bind<IScreenFactory>()
+                .To<DIScreenFactory>()
+                .AsSingle();
 
             Container.Bind<IUrlManager>()
                 .To<UrlManager>()
                 .AsSingle();
-            
+
             Container.Bind<IScreenResolver>()
                 .To<ScreenResolver>()
                 .AsSingle();
 
             Container.Bind<ISceneLoader>()
-                .To<SceneLoader>()
+                .To<DISceneLoader>()
                 .AsSingle()
-                .WithArguments(loadingSceneName, mainSceneName);
-            
+                .WithArguments(navigationSettings.LoadingSceneName, navigationSettings.MainSceneName);
+
+            Container.Bind<ITransition>()
+                .To<DefaultTransition>()
+                .AsSingle();
+
+            Container.Bind<IScreenLoader>()
+                .To<ScreenLoader>()
+                .AsSingle();
+
             Container.Bind<IHistory>()
                 .To<HistoryManager>()
                 .AsSingle();
@@ -41,7 +60,15 @@ namespace elselam.Navigation.ScriptableObjects {
                 .AsSingle();
 
             Container.Bind<IUrlDomainProvider>()
-                .FromInstance(appUrlDomain)
+                .FromInstance(navigationSettings.AppUrlDomain)
+                .AsSingle();
+
+            Container.Bind<ICurrentScreen>()
+                .To<CurrentScreen>()
+                .AsSingle();
+
+            Container.Bind<IParameterManager>()
+                .To<ParameterManager>()
                 .AsSingle();
         }
     }

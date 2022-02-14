@@ -1,11 +1,23 @@
 using System.Collections.Generic;
 
-namespace elselam.Navigation.History {
-    public class ScreenScheme {
-        public ScreenScheme(string url, string screenId, IDictionary<string, string> parameters = null) {
+namespace Elselam.UnityRouter.History
+{
+    /// <summary>
+    /// Scheme to hold screen metadata while stored in History
+    /// </summary>
+    public class ScreenScheme
+    {
+        public ScreenScheme(string url, string screenId, IDictionary<string, string> parameters = null)
+        {
             Url = url;
             ScreenId = screenId;
             Parameters = parameters;
+        }
+
+        public ScreenScheme(string url, string screenId)
+        {
+            Url = url;
+            ScreenId = screenId;
         }
 
         public string Url;

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 638d0596b7d04884a97a5d5b37e627c5, type: 3}
+  m_Name: ScreenA
+  m_EditorClassIdentifier: 
+  ScreenRegistry:
+    screenId: ScreenA
+    interactor: {fileID: 11500000, guid: 8102f0d02a4d043b1be75ce06ce4313b, type: 3}
+    interactorTypeName: ScreenAInteractor
+    presenter: {fileID: 5317322536617825571, guid: 84020f41257b24efbaf8a98107e6667e, type: 3}
+    presenterTypeName: ScreenAPresenter
+    view: {fileID: 11500000, guid: 099a7c1dbad3c47559fd974e8ea3d8df, type: 3}
+    viewTypeName: ScreenAView

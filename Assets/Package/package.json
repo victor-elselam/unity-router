@@ -1,17 +1,20 @@
 {
-  "name": "com.elselam.unavscreen",
-  "displaName": "UNavScreen",
-  "version": "0.0.1",
+  "name": "com.elselam.unity-router",
+  "displayName": "Unity Router",
+  "version": "1.0.0",
   "unity": "2020.3",
   "category": "Framework",
-  "description": "Framework for Unity screens navigation",
+  "description": "Framework for Unity screens navigation by deep link",
   "type": "library",
   "keywords": [
-    "navigation"
+    "navigation",
+    "router",
+    "unity router",
+    "deep link"
   ],
   "author": {
-    "name": "Victor",
-    "url": "https://github.com/dev-victorelselam"
+    "name": "Victor Elselam",
+    "url": "https://github.com/victor-elselam"
   },
   "samples": [
     {
