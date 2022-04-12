@@ -47,7 +47,6 @@ namespace Elselam.UnityRouter.Tests
                 .AsSingle();
 
             var registryB = Substitute.For<IScreenRegistry>();
-            registryB.ScreenInteractor.Returns(typeof(ScreenBInteractor));
             registryB.ScreenPresenter.Returns(typeof(ScreenBPresenter));
             registryB.ScreenId.Returns("MockScreenA");
 
@@ -96,7 +95,7 @@ namespace Elselam.UnityRouter.Tests
         [Test]
         public void GetScreenName_ValidType_ReturnScreenName()
         {
-            var name = screenResolver.GetScreenName(typeof(ScreenAInteractor));
+            var name = screenResolver.GetScreenName(typeof(ScreenAPresenter));
 
             name.Should().Be("MockScreenA");
         }
@@ -104,7 +103,7 @@ namespace Elselam.UnityRouter.Tests
         [Test]
         public void GetScreenName_InvalidType_ReturnStringEmpty()
         {
-            var name = screenResolver.GetScreenName(typeof(UnregisteredScreenInteractor));
+            var name = screenResolver.GetScreenName(typeof(UnregisteredScreenPresenter));
 
             name.Should().BeNull();
         }
@@ -132,7 +131,7 @@ namespace Elselam.UnityRouter.Tests
 
             model.Should().NotBeNull();
             model.ScreenId.Should().Be("MockScreenA");
-            model.Interactor.GetType().Should().Be(typeof(ScreenAInteractor));
+            model.Presenter.GetType().Should().Be(typeof(ScreenAPresenter));
         }
 
         [Test]

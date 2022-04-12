@@ -60,7 +60,7 @@ namespace Elselam.UnityRouter.Installers
             return history.HasHistory ? history.Back() : urlManager.BuildToScheme(defaultScreen.ScreenId, null);
         }
 
-        public string GetScreenName(Type controllerType) => screenRegistries.FirstOrDefault(s => s.ScreenInteractor == controllerType)?.ScreenId;
+        public string GetScreenName(Type presenterType) => screenRegistries.FirstOrDefault(s => s.ScreenPresenter == presenterType)?.ScreenId;
 
         public IScreenModel GetScreenModel(string screenId)
         {

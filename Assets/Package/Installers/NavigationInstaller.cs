@@ -70,6 +70,10 @@ namespace Elselam.UnityRouter.Installers
             Container.Bind<IParameterManager>()
                 .To<ParameterManager>()
                 .AsSingle();
+
+            Container.Bind<UnityRouter>()
+                .ToSelf()
+                .AsSingle();
         }
     }
 }

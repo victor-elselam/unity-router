@@ -10,18 +10,8 @@ namespace Elselam.UnityRouter.Installers
         string ScreenId { get; }
 
         /// <summary>
-        /// Screen Interactor
-        /// </summary>
-        IScreenInteractor Interactor { get; }
-
-        /// <summary>
         /// Screen Presenter
         /// </summary>
         IScreenPresenter Presenter { get; }
-
-        /// <summary>
-        /// Screen View
-        /// </summary>
-        IScreenView View { get; }
     }
 }

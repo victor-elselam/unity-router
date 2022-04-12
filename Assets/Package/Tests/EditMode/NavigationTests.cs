@@ -86,7 +86,7 @@ namespace Elselam.UnityRouter.Tests
                     var resolver = Substitute.For<IScreenResolver>();
                     var registries = Container.Resolve<List<IScreenRegistry>>();
                     resolver.ResolveFirstScreen().Returns(_ => new ScreenScheme("", "MockScreenA"));
-                    resolver.GetScreenName(Arg.Any<Type>()).Returns(arg => registries.FirstOrDefault(s => s.ScreenInteractor == arg.Arg<Type>())?.ScreenId);
+                    resolver.GetScreenName(Arg.Any<Type>()).Returns(arg => registries.FirstOrDefault(s => s.ScreenPresenter == arg.Arg<Type>())?.ScreenId);
                     return resolver;
                 }).AsSingle();
 
@@ -116,7 +116,6 @@ namespace Elselam.UnityRouter.Tests
                 {
                     var defaultScreen = Substitute.For<IScreenRegistry>();
                     defaultScreen.ScreenId.Returns("MockScreenA");
-                    defaultScreen.ScreenInteractor.Returns(typeof(ScreenAInteractor));
                     defaultScreen.ScreenPresenter.Returns(typeof(ScreenAPresenter));
                     return defaultScreen;
                 }).AsSingle();
@@ -147,7 +146,7 @@ namespace Elselam.UnityRouter.Tests
         [Test]
         public void NavigateTo_WithoutParams_CallLoadScreenWithScreenId()
         {
-            navigation.NavigateTo<ScreenAInteractor>();
+            navigation.NavigateTo<ScreenAPresenter>();
 
             enterSchemeSent.ScreenId.Should().Be("MockScreenA");
         }
@@ -160,7 +159,7 @@ namespace Elselam.UnityRouter.Tests
                 {"ItemPosition", JsonUtility.ToJson(new Vector3(15f, 10f, 5f))},
             };
 
-            navigation.NavigateTo<CustomScreenInteractor>(parameters: parameters);
+            navigation.NavigateTo<CustomScreenPresenter>(parameters: parameters);
 
             enterSchemeSent.Should().NotBeNull();
             enterSchemeSent.ScreenId.Should().Be("MockScreenCustom");
@@ -171,9 +170,9 @@ namespace Elselam.UnityRouter.Tests
         [Test]
         public void NavigateTo_ValidScreen_AddOldScreenSchemeToHistory()
         {
-            navigation.NavigateTo<SameScreenInteractor>();
+            navigation.NavigateTo<SameScreenPresenter>();
 
-            navigation.NavigateTo<CustomScreenInteractor>();
+            navigation.NavigateTo<SameScreenPresenter>();
 
             history.Received(1).Add(Arg.Any<ScreenScheme>());
         }
@@ -181,9 +180,9 @@ namespace Elselam.UnityRouter.Tests
         [Test]
         public void NavigateTo_ValidScreen_SetCurrentScreen()
         {
-            navigation.NavigateTo<SameScreenInteractor>();
+            navigation.NavigateTo<SameScreenPresenter>();
 
-            navigation.NavigateTo<CustomScreenInteractor>();
+            navigation.NavigateTo<CustomScreenPresenter>();
 
             currentScreen.Scheme.Should().Be(enterSchemeSent);
         }
@@ -191,7 +190,7 @@ namespace Elselam.UnityRouter.Tests
         [Test]
         public void NavigateTo_ValidScene_AddOldScreenSchemeToHistory()
         {
-            navigation.NavigateTo<ScreenAInteractor>();
+            navigation.NavigateTo<ScreenAPresenter>();
 
             navigation.NavigateTo("TestScene");
 
@@ -205,7 +204,7 @@ namespace Elselam.UnityRouter.Tests
 
             try
             {
-                navigation.NavigateTo<UnregisteredScreenInteractor>();
+                navigation.NavigateTo<UnregisteredScreenPresenter>();
             }
             catch (NavigationException e)
             {
@@ -222,7 +221,7 @@ namespace Elselam.UnityRouter.Tests
 
             try
             {
-                navigation.NavigateTo<EmptyIdInteractor>();
+                navigation.NavigateTo<EmptyIdPresenter>();
             }
             catch (NavigationException e)
             {
@@ -293,7 +292,7 @@ namespace Elselam.UnityRouter.Tests
         public void LoadScene_CallSceneLoaderWithLoadScreen()
         {
             var sceneName = "TestScene";
-            navigation.NavigateTo<ScreenAInteractor>();
+            navigation.NavigateTo<ScreenAPresenter>();
 
             navigation.NavigateTo(sceneName);
 

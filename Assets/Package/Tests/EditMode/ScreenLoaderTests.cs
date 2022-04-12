@@ -23,15 +23,12 @@ namespace Elselam.UnityRouter.Tests
         private const string invalidScreen = "InvalidScreen";
 
         private IScreenLoader screenLoader;
-        private IScreenInteractor screenInteractor;
+        private IScreenPresenter screenInteractor;
         private ITransition transition;
 
         [SetUp]
         public void Binding()
         {
-            Container.Bind<IScreenInteractor>()
-                .FromMethod(_ => Substitute.For<IScreenInteractor>())
-                .AsSingle();
             Container.Bind<IScreenPresenter>()
                 .FromMethod(_ => Substitute.For<IScreenPresenter>())
                 .AsSingle();
@@ -45,10 +42,7 @@ namespace Elselam.UnityRouter.Tests
                     {
                         if (info.Arg<string>() == validScreen)
                         {
-                            return new ScreenModel(info.Arg<string>(),
-                                Container.Resolve<IScreenInteractor>(),
-                                Container.Resolve<IScreenPresenter>(),
-                                null);
+                            return new ScreenModel(info.Arg<string>(), Container.Resolve<IScreenPresenter>());
                         }
 
                         return null;
@@ -100,7 +94,7 @@ namespace Elselam.UnityRouter.Tests
 
         [Inject]
         public void Construct(IScreenLoader screenLoader,
-            IScreenInteractor screenInteractor,
+            IScreenPresenter screenInteractor,
             ITransition transition)
         {
             this.screenLoader = screenLoader;
