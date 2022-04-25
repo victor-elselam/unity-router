@@ -450,7 +450,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1926127855065931096}
   - component: {fileID: 6229690082722103015}
-  - component: {fileID: 4974171326298416461}
   m_Layer: 0
   m_Name: ScreenBPresenter
   m_TagString: Untagged
@@ -485,23 +484,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb0266095dddf411eb0e548a4c523870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 2432253747118929956}
-  slider: {fileID: 8330389907330688627}
---- !u!114 &4974171326298416461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5002610012583836207}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3958e90444b5b4d1882de976b64a4e31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  screenContainer: {fileID: 2432253747118929956}
   slider: {fileID: 8330389907330688627}
   loadScene: {fileID: 481491258313111251}
-  backButton: {fileID: 3554185761267651831}
 --- !u!1 &5317381383660613751
 GameObject:
   m_ObjectHideFlags: 0

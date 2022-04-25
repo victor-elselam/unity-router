@@ -7,8 +7,6 @@ namespace Elselam.UnityRouter.Installers
     {
         string ScreenId { get; }
         Type ScreenPresenter { get; }
-        Type ScreenInteractor { get; }
-        Type ScreenView { get; }
         BaseScreenPresenter ScreenPrefab { get; }
     }
 }

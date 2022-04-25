@@ -15,10 +15,7 @@ namespace Elselam.UnityRouter.Installers
 
         public IScreenModel Create(IScreenRegistry screenRegistry)
         {
-            return new ScreenModel(screenRegistry.ScreenId,
-                (IScreenInteractor)container.Resolve(screenRegistry.ScreenInteractor),
-                (IScreenPresenter)container.Resolve(screenRegistry.ScreenPresenter),
-                (IScreenView)container.Resolve(screenRegistry.ScreenView));
+            return new ScreenModel(screenRegistry.ScreenId, (IScreenPresenter) container.Resolve(screenRegistry.ScreenPresenter));
         }
     }
 }

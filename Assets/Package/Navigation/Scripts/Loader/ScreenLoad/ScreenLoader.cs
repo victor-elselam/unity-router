@@ -26,7 +26,7 @@ namespace Elselam.UnityRouter.ScreenLoad
             if (enterScreenModel == null)
                 throw new NavigationException($"Invalid target screen: {enterScheme.ScreenId}");
 
-            enterScreenModel.Interactor.OnEnter(enterScheme.Parameters);
+            enterScreenModel.Presenter.OnEnter(enterScheme.Parameters);
         }
 
         public async UniTask Transition(ScreenScheme enterScheme, ScreenScheme exitScheme = null, ITransition transition = null)
@@ -48,7 +48,7 @@ namespace Elselam.UnityRouter.ScreenLoad
                 return null;
 
             var exitScreenModel = screenResolver.GetScreenModel(exitScheme.ScreenId);
-            var parameters = exitScreenModel.Interactor.OnExit();
+            var parameters = exitScreenModel.Presenter.OnExit();
 
             if (!back)
             {

@@ -1,11 +1,10 @@
 using Elselam.UnityRouter.Domain;
-using Sample.UsageWithoutDependencyInjection.Screens.ScreenB.Presenter;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Sample.UsageWithoutDependencyInjection.Screens.ScreenA.Presenter
 {
-    public class ScreenA : BaseScreen
+    public class ScreenA : BaseScreenPresenter
     {
         [SerializeField] private Button nextScreenButton;
 

@@ -8,9 +8,6 @@ namespace Assets.Package.Navigation.Scripts.Loader
 {
     public class LoaderFactory : ILoaderFactory
     {
-        private ISceneLoader sceneLoader;
-        private IScreenLoader screenLoader;
-
         private ISpecificLoader sceneToScene;
         private ISpecificLoader sceneToScreen;
         private ISpecificLoader screenToScene;
@@ -18,9 +15,6 @@ namespace Assets.Package.Navigation.Scripts.Loader
 
         public LoaderFactory(ISceneLoader sceneLoader, IScreenLoader screenLoader)
         {
-            this.sceneLoader = sceneLoader;
-            this.screenLoader = screenLoader;
-
             sceneToScene = new SceneToSceneLoader(sceneLoader);
             sceneToScreen = new SceneToScreenLoader(screenLoader, sceneLoader);
             screenToScene = new ScreenToSceneLoader(screenLoader, sceneLoader);
