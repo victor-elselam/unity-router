@@ -16,7 +16,7 @@ using Zenject;
 namespace Elselam.UnityRouter.Tests
 {
     [TestFixture]
-    public class ScreenLoaderTests : ZenjectUnitTestFixture
+    public class ScreenLoaderTests
     {
         private List<ScreenScheme> historyList;
         private const string validScreen = "ValidScreen";
@@ -29,11 +29,12 @@ namespace Elselam.UnityRouter.Tests
         [SetUp]
         public void Binding()
         {
-            Container.Bind<IScreenPresenter>()
+            var container = new DiContainer(StaticContext.Container);
+            container.Bind<IScreenPresenter>()
                 .FromMethod(_ => Substitute.For<IScreenPresenter>())
                 .AsSingle();
 
-            Container.Bind<IScreenResolver>()
+            container.Bind<IScreenResolver>()
                 .FromMethod(_ =>
                 {
                     var resolver = Substitute.For<IScreenResolver>();
@@ -42,7 +43,7 @@ namespace Elselam.UnityRouter.Tests
                     {
                         if (info.Arg<string>() == validScreen)
                         {
-                            return new ScreenModel(info.Arg<string>(), Container.Resolve<IScreenPresenter>());
+                            return new ScreenModel(info.Arg<string>(), container.Resolve<IScreenPresenter>());
                         }
 
                         return null;
@@ -51,7 +52,7 @@ namespace Elselam.UnityRouter.Tests
                     return resolver;
                 }).AsSingle();
 
-            Container.Bind<ITransition>()
+            container.Bind<ITransition>()
                 .FromMethod(_ =>
                 {
                     var transition = Substitute.For<ITransition>();
@@ -63,7 +64,7 @@ namespace Elselam.UnityRouter.Tests
             string appDomain = "domain://";
 
             historyList = new List<ScreenScheme>();
-            Container.Bind<IHistory>()
+            container.Bind<IHistory>()
                 .FromMethod(_ =>
                 {
                     var history = Substitute.For<IHistory>();
@@ -73,7 +74,7 @@ namespace Elselam.UnityRouter.Tests
                     return history;
                 }).AsSingle();
 
-            Container.Bind<IUrlDomainProvider>()
+            container.Bind<IUrlDomainProvider>()
                 .FromMethod(_ =>
                 {
                     var urlProvider = Substitute.For<IUrlDomainProvider>();
@@ -81,15 +82,15 @@ namespace Elselam.UnityRouter.Tests
                     return urlProvider;
                 });
 
-            Container.Bind<IUrlManager>()
+            container.Bind<IUrlManager>()
                 .To<UrlManager>()
                 .AsSingle();
 
-            Container.Bind<IScreenLoader>()
+            container.Bind<IScreenLoader>()
                .To<ScreenLoader>()
                .AsSingle();
 
-            Container.Inject(this);
+            container.Inject(this);
         }
 
         [Inject]

@@ -7,7 +7,7 @@ using Zenject;
 namespace Elselam.UnityRouter.Tests
 {
     [TestFixture]
-    public class SceneLoaderTests : ZenjectUnitTestFixture
+    public class SceneLoaderTests
     {
         private const string validScene = "ValidScreen";
         private const string invalidScene = "InvalidScreen";
@@ -17,7 +17,8 @@ namespace Elselam.UnityRouter.Tests
         [SetUp]
         public void Binding()
         {
-            Container.Inject(this);
+            var container = new DiContainer(StaticContext.Container);
+            container.Inject(this);
         }
 
         [Inject]

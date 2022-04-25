@@ -11,38 +11,40 @@ using Zenject;
 namespace Elselam.UnityRouter.Tests
 {
     [TestFixture]
-    public class ScreenResolverTests : ZenjectUnitTestFixture
+    public class ScreenResolverTests
     {
         private IScreenResolver screenResolver;
         private IHistory history;
+        private DiContainer container;
 
         [SetUp]
         public void Binding()
         {
+            container = new DiContainer(StaticContext.Container);
             string appDomain = "domain://";
-            Container.Bind<IHistory>()
+            container.Bind<IHistory>()
                 .FromMethod(_ => Substitute.For<IHistory>())
                 .AsSingle();
 
-            Container.Bind<IUrlDomainProvider>().FromMethod(_ =>
+            container.Bind<IUrlDomainProvider>().FromMethod(_ =>
             {
                 var urlProvider = Substitute.For<IUrlDomainProvider>();
                 urlProvider.Url.Returns(appDomain);
                 return urlProvider;
             });
 
-            Container.Bind<IScreenFactory>()
+            container.Bind<IScreenFactory>()
                .FromMethod(_ =>
                {
                    var screenFactory = Substitute.For<IScreenFactory>();
                    screenFactory
                        .Create(Arg.Any<IScreenRegistry>())
-                       .Returns(info => Container.ResolveId<IScreenModel>(info.Arg<IScreenRegistry>().ScreenId));
+                       .Returns(info => container.ResolveId<IScreenModel>(info.Arg<IScreenRegistry>().ScreenId));
                    return screenFactory;
                })
                .AsSingle();
 
-            Container.Bind<IUrlManager>()
+            container.Bind<IUrlManager>()
                 .To<UrlManager>()
                 .AsSingle();
 
@@ -50,16 +52,16 @@ namespace Elselam.UnityRouter.Tests
             registryB.ScreenPresenter.Returns(typeof(ScreenBPresenter));
             registryB.ScreenId.Returns("MockScreenA");
 
-            Container.Bind<IScreenRegistry>()
+            container.Bind<IScreenRegistry>()
                 .FromInstance(registryB)
                 .AsSingle();
 
-            Container.Bind<IScreenResolver>()
+            container.Bind<IScreenResolver>()
                 .To<ScreenResolver>()
                 .AsSingle();
 
-            ScreenMocks.RegisterScreensModels(Container);
-            Container.Inject(this);
+            ScreenMocks.RegisterScreensModels(container);
+            container.Inject(this);
         }
 
         [Inject]
@@ -74,7 +76,7 @@ namespace Elselam.UnityRouter.Tests
         [Test]
         public void InitializeNavigation_LoadDefaultScreenAsFirstScreen()
         {
-            var firstScreen = Container.Resolve<IScreenRegistry>().ScreenId;
+            var firstScreen = container.Resolve<IScreenRegistry>().ScreenId;
 
             var result = screenResolver.ResolveFirstScreen();
 

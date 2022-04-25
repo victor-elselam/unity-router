@@ -10,7 +10,7 @@ using Zenject;
 namespace Elselam.UnityRouter.Tests
 {
     [TestFixture]
-    public class UrlManagerTests : ZenjectUnitTestFixture
+    public class UrlManagerTests
     {
         private IUrlManager urlManager;
         private List<ScreenScheme> historyList;
@@ -19,8 +19,9 @@ namespace Elselam.UnityRouter.Tests
         [SetUp]
         public void Binding()
         {
+            var container = new DiContainer(StaticContext.Container);
             appDomain = "domain://";
-            Container.Bind<IUrlDomainProvider>().FromMethod(_ =>
+            container.Bind<IUrlDomainProvider>().FromMethod(_ =>
             {
                 var provider = Substitute.For<IUrlDomainProvider>();
                 provider.Url.Returns(appDomain);
@@ -28,7 +29,7 @@ namespace Elselam.UnityRouter.Tests
             });
 
             historyList = new List<ScreenScheme>();
-            Container.Bind<IHistory>()
+            container.Bind<IHistory>()
                 .FromMethod(_ =>
                 {
                     var history = Substitute.For<IHistory>();
@@ -38,11 +39,11 @@ namespace Elselam.UnityRouter.Tests
                 })
                 .AsSingle();
 
-            Container.Bind<IUrlManager>()
+            container.Bind<IUrlManager>()
                 .To<UrlManager>()
                 .AsSingle();
 
-            Container.Inject(this);
+            container.Inject(this);
         }
 
         [Inject]
@@ -80,7 +81,6 @@ namespace Elselam.UnityRouter.Tests
         public void Deserialize_DeepLink_ReturnValidScheme()
         {
             var screenId = "MockScreenA";
-            var parameters = new Dictionary<string, string> { ["test"] = "true", ["position"] = "10" };
             var deepLink = $"{appDomain}{screenId}?test=true&position=10";
 
             var result = urlManager.Deserialize(deepLink);
