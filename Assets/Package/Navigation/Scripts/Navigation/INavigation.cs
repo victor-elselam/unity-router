@@ -23,17 +23,17 @@ namespace Elselam.UnityRouter.Installers
         void NavigateToDefaultScreen();
 
         /// <summary>
-        /// Navigate to specified type, the target is required to be a Interactor screen, aiming to follow clean architecture.
+        /// Navigate to specified type, the target is required to be a Presenter screen.
         /// </summary>
         /// <typeparam name="TScreen">Target screen interactor type</typeparam>
         /// <param name="transition">Instance of the desired target, if null, system will select default transition</param>
         /// <param name="parameters">Parameters to send to the target screen</param>
-        void NavigateTo<TScreen>([CanBeNull] ITransition transition = null, IDictionary<string, string> parameters = null) where TScreen : IScreenInteractor;
+        void NavigateTo<TScreen>([CanBeNull] ITransition transition = null, IDictionary<string, string> parameters = null) where TScreen : IScreenPresenter;
 
         /// <summary>
         /// Variant to allow targeting by dynamic types instead of generic.
         /// </summary>
-        /// <param name="screenType">Target screen interactor type</param>
+        /// <param name="screenType">Target screen presenter type</param>
         /// <param name="transition">Instance of the desired target, if null, system will select default transition</param>
         /// <param name="parameters">Parameters to send to the target screen</param>
         void NavigateTo(Type screenType, [CanBeNull] ITransition transition = null, IDictionary<string, string> parameters = null);
@@ -48,7 +48,7 @@ namespace Elselam.UnityRouter.Installers
         /// <summary>
         /// Variant to allow targeting by name instead of types.
         /// </summary>
-        /// <param name="screenType">Target screen interactor type</param>
+        /// <param name="screenType">Target screen presenter type</param>
         /// <param name="transition">Instance of the desired target, if null, system will select default transition</param>
         /// <param name="parameters">Parameters to send to the target screen</param>
         void NavigateTo(string screenName, ITransition transition = null, IDictionary<string, string> parameters = null);

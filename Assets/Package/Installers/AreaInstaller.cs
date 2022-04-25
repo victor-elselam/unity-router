@@ -22,18 +22,10 @@ namespace Elselam.UnityRouter.Installers
                     .AsSingle()
                     .OnInstantiated<IScreenPresenter>((context, o) => o.Disable())
                     .NonLazy();
-
-                Container.BindInterfacesAndSelfTo(screenRegistry.ScreenInteractor)
-                    .AsSingle()
-                    .Lazy();
-
-                Container.BindInterfacesAndSelfTo(screenRegistry.ScreenView)
-                    .FromComponentInHierarchy()
-                    .AsSingle();
             }
 
             Container.Bind<List<IScreenRegistry>>().FromInstance(screens
-                .Select(s => (IScreenRegistry)s.ScreenRegistry).ToList())
+                .Select(s => (IScreenRegistry) s.ScreenRegistry).ToList())
                 .AsSingle();
         }
     }

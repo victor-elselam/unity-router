@@ -7,12 +7,16 @@ using Zenject;
 namespace Elselam.UnityRouter.Tests
 {
     [TestFixture]
-    public class HistoryTests : ZenjectUnitTestFixture
+    public class HistoryTests
     {
+        private DiContainer container;
+
         [SetUp]
         public void Binding()
         {
-            Container.Bind<IHistory>()
+            container = new DiContainer(StaticContext.Container);
+
+            container.Bind<IHistory>()
                 .To<HistoryManager>()
                 .AsSingle();
         }
@@ -22,7 +26,7 @@ namespace Elselam.UnityRouter.Tests
         {
             var added = false;
             var scheme = new ScreenScheme("://domain.com/MockScreenA", "MockScreenA");
-            var history = Container.Resolve<IHistory>();
+            var history = container.Resolve<IHistory>();
 
             added = history.Add(scheme);
 
@@ -34,7 +38,7 @@ namespace Elselam.UnityRouter.Tests
         {
             var added = false;
             ScreenScheme scheme = null;
-            var history = Container.Resolve<IHistory>();
+            var history = container.Resolve<IHistory>();
 
             added = history.Add(scheme);
 
@@ -48,7 +52,7 @@ namespace Elselam.UnityRouter.Tests
         public void Back_ThreeTimes_CheckScreenSuccess(string screen1, string screen2, string screen3)
         {
             ScreenScheme scheme = null;
-            var history = Container.Resolve<IHistory>();
+            var history = container.Resolve<IHistory>();
             history.Add(new ScreenScheme("", screen1));
             history.Add(new ScreenScheme("", screen2));
             history.Add(new ScreenScheme("", screen3));
@@ -63,7 +67,7 @@ namespace Elselam.UnityRouter.Tests
         [Test]
         public void Back_ThreeTimesFails_ReturnNull()
         {
-            var history = Container.Resolve<IHistory>();
+            var history = container.Resolve<IHistory>();
             var scheme1 = new ScreenScheme("", "MockScreenA");
             var scheme2 = new ScreenScheme("", "MockScreenB");
             history.Add(scheme1);

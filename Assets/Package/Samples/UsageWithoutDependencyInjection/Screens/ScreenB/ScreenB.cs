@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Sample.UsageWithoutDependencyInjection.Screens.ScreenB.Presenter
 {
-    public class ScreenB : BaseScreen
+    public class ScreenB : BaseScreenPresenter
     {
         private const string SliderPosKey = "sliderPos";
         [SerializeField] private Button loadScene;

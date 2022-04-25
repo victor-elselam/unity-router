@@ -29,7 +29,7 @@ namespace Elselam.UnityRouter.History
         {
             if (!HasHistory)
             {
-                Debug.LogWarning($"[{Defaults.ModuleName}] No Screens to go back");
+                Debug.LogWarning($"[Unity-Router] No Screens to go back");
                 return null;
             }
 

@@ -7,18 +7,19 @@ using Zenject;
 namespace Elselam.UnityRouter.Tests
 {
     [TestFixture]
-    public class ParameterManagerTests : ZenjectUnitTestFixture
+    public class ParameterManagerTests
     {
         private IParameterManager parameterManager;
 
         [SetUp]
         public void Binding()
         {
-            Container.Bind<IParameterManager>()
+            var container = new DiContainer(StaticContext.Container);
+            container.Bind<IParameterManager>()
                 .To<ParameterManager>()
                 .AsSingle();
 
-            Container.Inject(this);
+            container.Inject(this);
         }
 
         [Inject]

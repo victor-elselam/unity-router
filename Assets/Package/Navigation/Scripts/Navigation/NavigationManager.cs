@@ -46,7 +46,7 @@ namespace Elselam.UnityRouter.Installers
             NavigateTo(scheme, transition, true);
         }
 
-        public void NavigateTo<TScreen>(ITransition transition = null, IDictionary<string, string> parameters = null) where TScreen : IScreenInteractor
+        public void NavigateTo<TScreen>(ITransition transition = null, IDictionary<string, string> parameters = null) where TScreen : IScreenPresenter
             => NavigateTo(typeof(TScreen), transition, parameters);
 
         public void NavigateTo(Type screenType, ITransition transition = null, IDictionary<string, string> parameters = null)

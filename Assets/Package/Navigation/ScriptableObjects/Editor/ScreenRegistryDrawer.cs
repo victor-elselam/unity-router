@@ -12,14 +12,8 @@ namespace Elselam.UnityRouter.Installers.Editor
 
         private const string IdProperty = "screenId";
 
-        private const string InteractorProperty = "interactor";
-        private const string InteractorPropertyName = "interactorTypeName";
-
         private const string PresenterProperty = "presenter";
         private const string PresenterPropertyName = "presenterTypeName";
-
-        private const string ViewProperty = "view";
-        private const string ViewPropertyName = "viewTypeName";
 
         private const float DefaultSpace = 1.5f;
 
@@ -38,17 +32,7 @@ namespace Elselam.UnityRouter.Installers.Editor
             currentSpace += DefaultSpace;
 
             new PropertyNameDrawer(position, property, height, ref currentSpace,
-                InteractorProperty, InteractorPropertyName, "InteractorType", typeof(MonoScript));
-
-            currentSpace += DefaultSpace;
-
-            new PropertyNameDrawer(position, property, height, ref currentSpace,
                 PresenterProperty, PresenterPropertyName, "PresenterType", typeof(BaseScreenPresenter));
-
-            currentSpace += DefaultSpace;
-
-            new PropertyNameDrawer(position, property, height, ref currentSpace,
-                ViewProperty, ViewPropertyName, "ViewType", typeof(MonoScript));
 
             EditorGUI.EndProperty();
         }
