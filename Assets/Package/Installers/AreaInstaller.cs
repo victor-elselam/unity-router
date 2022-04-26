@@ -1,4 +1,3 @@
-using Elselam.UnityRouter.Domain;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,23 +8,21 @@ namespace Elselam.UnityRouter.Installers
     [CreateAssetMenu(fileName = "New Screens Installer", menuName = "Elselam/UnityRouter/Installers/Area", order = 0)]
     public class AreaInstaller : ScriptableObjectInstaller
     {
-        [SerializeField] private List<ScreenRegistryObject> screens;
+        [SerializeField] private BaseScreensInstaller[] screensInstaller;
 
         public override void InstallBindings()
         {
-            foreach (var screenRegistryObject in screens)
-            {
-                var screenRegistry = screenRegistryObject.ScreenRegistry;
+            var registries = screensInstaller.SelectMany(si => si.GetScreens()).ToList();
 
-                Container.BindInterfacesAndSelfTo(screenRegistry.ScreenPresenter)
-                    .FromComponentInNewPrefab(screenRegistry.ScreenPrefab)
-                    .AsSingle()
-                    .OnInstantiated<IScreenPresenter>((context, o) => o.Disable())
-                    .NonLazy();
+            foreach (var screenRegistry in registries)
+            {
+                Container.Bind(screenRegistry.ScreenPresenter)
+                    .WithId(screenRegistry.ScreenId)
+                    .AsSingle();
             }
 
-            Container.Bind<List<IScreenRegistry>>().FromInstance(screens
-                .Select(s => (IScreenRegistry) s.ScreenRegistry).ToList())
+            Container.Bind<List<IScreenRegistry>>()
+                .FromInstance(registries)
                 .AsSingle();
         }
     }

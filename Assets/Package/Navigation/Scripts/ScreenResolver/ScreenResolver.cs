@@ -1,3 +1,4 @@
+using Elselam.UnityRouter.Domain;
 using Elselam.UnityRouter.Extensions;
 using Elselam.UnityRouter.History;
 using Elselam.UnityRouter.Url;
@@ -23,13 +24,12 @@ namespace Elselam.UnityRouter.Installers
             List<IScreenRegistry> screenRegistries,
             IScreenFactory screenFactory,
             IHistory history,
-            IScreenRegistry defaultScreen,
             IUrlManager urlManager)
         {
             this.screenRegistries = screenRegistries;
             this.screenFactory = screenFactory;
             this.history = history;
-            this.defaultScreen = defaultScreen;
+            this.defaultScreen = screenRegistries.First();
             this.urlManager = urlManager;
         }
 
@@ -66,7 +66,27 @@ namespace Elselam.UnityRouter.Installers
         {
             if (screenId.IsNullOrEmpty())
                 return null;
-            return screenModels.TryGetValue(screenId, out var value) ? value : null;
+
+            if (!screenModels.TryGetValue(screenId, out var value))
+                value = Create(screenId);
+
+            return value;
+        }
+
+        private IScreenModel Create(string screenId)
+        {
+            var registry = screenRegistries.FirstOrDefault(s => s.ScreenId == screenId);
+            if (registry == null)
+                return null;
+            return Create(registry);
+        }
+
+        private IScreenModel Create(IScreenRegistry screenRegistry)
+        {
+            var model = screenFactory.Create(screenRegistry);
+            screenModels[screenRegistry.ScreenId] = model;
+
+            return model;
         }
     }
 }

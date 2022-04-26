@@ -22,9 +22,10 @@ namespace Elselam.UnityRouter.Tests
         {
             container = new DiContainer(StaticContext.Container);
             string appDomain = "domain://";
-            container.Bind<IHistory>()
-                .FromMethod(_ => Substitute.For<IHistory>())
-                .AsSingle();
+
+            container.Bind<IHistory>().FromInstance(Substitute.For<IHistory>()).AsSingle();
+            container.Bind<IUrlManager>().To<UrlManager>().AsSingle();
+            container.Bind<IScreenResolver>().To<ScreenResolver>().AsSingle();
 
             container.Bind<IUrlDomainProvider>().FromMethod(_ =>
             {
@@ -44,21 +45,11 @@ namespace Elselam.UnityRouter.Tests
                })
                .AsSingle();
 
-            container.Bind<IUrlManager>()
-                .To<UrlManager>()
-                .AsSingle();
-
             var registryB = Substitute.For<IScreenRegistry>();
             registryB.ScreenPresenter.Returns(typeof(ScreenBPresenter));
             registryB.ScreenId.Returns("MockScreenA");
 
-            container.Bind<IScreenRegistry>()
-                .FromInstance(registryB)
-                .AsSingle();
-
-            container.Bind<IScreenResolver>()
-                .To<ScreenResolver>()
-                .AsSingle();
+            container.Bind<IScreenRegistry>().FromInstance(registryB).AsSingle();
 
             ScreenMocks.RegisterScreensModels(container);
             container.Inject(this);

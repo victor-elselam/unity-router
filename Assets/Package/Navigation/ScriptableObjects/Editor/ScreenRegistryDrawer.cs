@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Elselam.UnityRouter.Installers.Editor
 {
-    [CustomPropertyDrawer(typeof(ScreenRegistry))]
+    //[CustomPropertyDrawer(typeof(ScreenRegistry))]
     public class ScreenRegistryDrawer : PropertyDrawer
     {
         private const int PropertiesCount = 9;
@@ -14,6 +14,8 @@ namespace Elselam.UnityRouter.Installers.Editor
 
         private const string PresenterProperty = "presenter";
         private const string PresenterPropertyName = "presenterTypeName";
+
+        private const string PrefabProperty = "ScreenPrefab";
 
         private const float DefaultSpace = 1.5f;
 
@@ -32,7 +34,7 @@ namespace Elselam.UnityRouter.Installers.Editor
             currentSpace += DefaultSpace;
 
             new PropertyNameDrawer(position, property, height, ref currentSpace,
-                PresenterProperty, PresenterPropertyName, "PresenterType", typeof(BaseScreenPresenter));
+                PresenterProperty, PresenterPropertyName, "PresenterType", typeof(IScreenPresenter));
 
             EditorGUI.EndProperty();
         }

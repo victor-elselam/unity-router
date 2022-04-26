@@ -220,13 +220,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
     appUrlDomain: {fileID: 11400000, guid: 46d3df8b2d96c5c4aa83654cc7c39d70, type: 2}
-    defaultScreen: {fileID: 11400000, guid: 555dfce569abfc54ea0e9729f8fe85cb, type: 2}
     loadingSceneName: Loading
     mainSceneName: UsageWithoutDependencyInjection
-  screenList:
-  - {fileID: 11400000, guid: 555dfce569abfc54ea0e9729f8fe85cb, type: 2}
-  - {fileID: 11400000, guid: 2c27c83559ea1274aa2d873762d39ee3, type: 2}
+    createByDemand: 0
   screensContainer: {fileID: 2078098430}
+  screenAPrefab: {fileID: 5002610012583836207, guid: 19ec9d9e91e80294bbf5656e2f349cba, type: 3}
+  screenBPrefab: {fileID: 5002610012583836207, guid: 322af5f7e41042e4aa89e2dbbac03495, type: 3}
 --- !u!4 &2078098430
 Transform:
   m_ObjectHideFlags: 0

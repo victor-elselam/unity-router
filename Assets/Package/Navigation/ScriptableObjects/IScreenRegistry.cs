@@ -1,5 +1,6 @@
 using Elselam.UnityRouter.Domain;
 using System;
+using UnityEngine;
 
 namespace Elselam.UnityRouter.Installers
 {
@@ -7,6 +8,6 @@ namespace Elselam.UnityRouter.Installers
     {
         string ScreenId { get; }
         Type ScreenPresenter { get; }
-        BaseScreenPresenter ScreenPrefab { get; }
+        GameObject ScreenPrefab { get; }
     }
 }
