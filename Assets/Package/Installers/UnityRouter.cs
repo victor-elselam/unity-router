@@ -7,6 +7,7 @@ using Elselam.UnityRouter.Transitions;
 using Elselam.UnityRouter.Url;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Elselam.UnityRouter.Installers
@@ -31,13 +32,13 @@ namespace Elselam.UnityRouter.Installers
         /// Setup Navigation dependencies with default instances. Any earlier provided instance will be respected
         /// </summary>
         /// <param name="settings"></param>
-        public static void Setup(NavigationSettings settings, List<IScreenRegistry> screenList, Transform screensContainer)
+        public static void Setup(NavigationSettings settings, List<IScreenRegistry> screenList)
         {
             CurrentScreen ??= new CurrentScreen();
-            ScreenFactory ??= new DefaultScreenFactory(screensContainer);
+            ScreenFactory ??= new DefaultScreenFactory(new Zenject.DiContainer());
             History ??= new HistoryManager();
             UrlManager ??= new UrlManager(settings.AppUrlDomain, History);
-            ScreenResolver ??= new ScreenResolver(screenList, ScreenFactory, History, settings.DefaultScreen, UrlManager);
+            ScreenResolver ??= new ScreenResolver(screenList, ScreenFactory, History, UrlManager);
             DefaultTransition ??= new DefaultTransition();
             SceneLoader ??= new DefaultSceneLoader(settings.LoadingSceneName, settings.MainSceneName);
             ScreenLoader ??= new ScreenLoader(UrlManager, ScreenResolver, DefaultTransition);

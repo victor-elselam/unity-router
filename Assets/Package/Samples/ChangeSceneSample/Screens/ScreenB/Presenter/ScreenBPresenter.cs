@@ -8,7 +8,7 @@ using Zenject;
 
 namespace Sample.ChangeSceneSample.Screens.ScreenB.Presenter
 {
-    public class ScreenBPresenter : BaseCanvasScreenPresenter
+    public class ScreenBPresenter : MonoBehaviour, IScreenPresenter
     {
         [SerializeField] private Slider slider;
         [SerializeField] private Button loadScene;
@@ -16,6 +16,8 @@ namespace Sample.ChangeSceneSample.Screens.ScreenB.Presenter
         private float elementPosition = 0;
         private INavigation navigation;
         private IParameterManager parameterManager;
+
+        public Transform Transform => transform;
 
         [Inject]
         public void Inject(INavigation navigation, IParameterManager parameterManager)
@@ -26,7 +28,10 @@ namespace Sample.ChangeSceneSample.Screens.ScreenB.Presenter
             loadScene.onClick.AddListener(LoadScene);
         }
 
-        public override void OnEnter(IDictionary<string, string> parameters)
+        public void Enable() => Transform.gameObject.SetActive(true);
+        public void Disable() => Transform.gameObject.SetActive(false);
+
+        public void OnEnter(IDictionary<string, string> parameters)
         {
             elementPosition = parameterManager.GetParamOfType<float>(parameters, "elementPosition", defaultValue: elementPosition);
             slider.value = elementPosition;
@@ -47,7 +52,7 @@ namespace Sample.ChangeSceneSample.Screens.ScreenB.Presenter
             elementPosition = position;
         }
 
-        public override IDictionary<string, string> OnExit()
+        public IDictionary<string, string> OnExit()
         {
             var paramPosition = parameterManager.Create("elementPosition", slider.value);
             var parameters = parameterManager.CreateDictionary(paramPosition);

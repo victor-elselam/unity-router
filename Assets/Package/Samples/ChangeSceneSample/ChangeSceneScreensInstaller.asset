@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 780eefdf2cdc438f96fc81d38480bdfd, type: 3}
   m_Name: ChangeSceneScreensInstaller
   m_EditorClassIdentifier: 
-  screens:
-  - {fileID: 11400000, guid: 80c0b7f5a46c4463facd92a65b431114, type: 2}
-  - {fileID: 11400000, guid: 9b8a5202f53e649b1ab2b343f81efbba, type: 2}
+  screensInstaller:
+  - {fileID: 11400000, guid: b5a365e2165e7e44aa56d6c58a4841e3, type: 2}

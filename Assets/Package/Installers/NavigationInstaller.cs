@@ -18,16 +18,12 @@ namespace Elselam.UnityRouter.Installers
 
         public override void InstallBindings()
         {
-            Container.Bind<IScreenRegistry>()
-                .FromInstance(navigationSettings.DefaultScreen)
-                .AsSingle();
-
             Container.Bind<ILoaderFactory>()
                 .To<LoaderFactory>()
                 .AsSingle();
 
             Container.Bind<IScreenFactory>()
-                .To<DIScreenFactory>()
+                .To<DefaultScreenFactory>()
                 .AsSingle();
 
             Container.Bind<IUrlManager>()
