@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Package.Samples.ChangeSceneSample
 {
     [CreateAssetMenu(fileName = "New Screens Installer", menuName = "Elselam/UnityRouter/Installers/Area1", order = 0)]
-    public class ChangeSceneSampleScreensInstaller : BaseScreensInstaller
+    public class ChangeSceneSampleScreensInstaller : BaseAreaInstaller
     {
         [SerializeField] private GameObject screenAPrefab;
         [SerializeField] private GameObject screenBPrefab;

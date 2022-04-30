@@ -24,7 +24,7 @@ namespace Elselam.UnityRouter.Installers
 
         private IScreenModel CreateMonoBehaviour(IScreenRegistry screenRegistry)
         {
-            var instance = container.InstantiatePrefab(screenRegistry.ScreenPrefab)?.GetComponent<IScreenPresenter>();
+            var instance = container.InstantiatePrefabForComponent<IScreenPresenter>(screenRegistry.ScreenPrefab);
             instance.Disable();
 
             return new ScreenModel(screenRegistry.ScreenId, instance);

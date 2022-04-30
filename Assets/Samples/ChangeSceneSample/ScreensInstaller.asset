@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 780eefdf2cdc438f96fc81d38480bdfd, type: 3}
-  m_Name: ChangeSceneScreensInstaller
+  m_Name: ScreensInstaller
   m_EditorClassIdentifier: 
   screensInstaller:
   - {fileID: 11400000, guid: b5a365e2165e7e44aa56d6c58a4841e3, type: 2}

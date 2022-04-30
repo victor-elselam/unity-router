@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Elselam.UnityRouter.Installers
 {
-    public abstract class BaseScreensInstaller : ScriptableObject
+    public abstract class BaseAreaInstaller : ScriptableObject
     {
         public abstract List<IScreenRegistry> GetScreens();
     }
