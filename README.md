@@ -28,32 +28,47 @@ Unity-Router always deals with the 'IScreenPresenter' interface when navigating,
 In our default setup, the 'IScreenFactory' used to perform the screen creation is the 'DefaultScreenFactory', which presumes that the IScreenPresenter is also the MonoBehaviour of the prefab. \
 However, this is totally extensible by creating your own 'IScreenFactory' and make the relationships between them. For example, a MVP architecture Screen Factory:
  ```
- public class MvpScreenFactory : IScreenFactory
+public class MvpScreenFactory : IScreenFactory
+{
+    private DiContainer container;
+
+    public MvpScreenFactory(DiContainer container)
     {
-        private DiContainer container;
-
-        public MvpScreenFactory(DiContainer container)
-        {
-            this.container = container;
-        }
-
-        public IScreenModel Create(IScreenRegistry screenRegistry)
-        {
-            var instance = container.InstantiatePrefabForComponent<IBaseView>(screenRegistry.ScreenPrefab);
-            instance.Disable();
-            BindView(instance);
-
-            var presenter = (IScreenPresenter) container.ResolveId(screenRegistry.ScreenPresenter, screenRegistry.ScreenId);
-            return new ScreenModel(screenRegistry.ScreenId, presenter);
-        }
-
-        private void BindView(IBaseView instance) => 
-            container.BindInterfacesTo(instance.GetType()).FromInstance(instance).AsSingle().IfNotBound();
+        this.container = container;
     }
+
+    public IScreenModel Create(IScreenRegistry screenRegistry)
+    {
+        var instance = container.InstantiatePrefabForComponent<IBaseView>(screenRegistry.ScreenPrefab);
+        instance.Disable();
+        BindView(instance);
+
+        var presenter = (IScreenPresenter) container.ResolveId(screenRegistry.ScreenPresenter, screenRegistry.ScreenId);
+        return new ScreenModel(screenRegistry.ScreenId, presenter);
+    }
+
+    private void BindView(IBaseView instance) => 
+        container.BindInterfacesTo(instance.GetType()).FromInstance(instance).AsSingle().IfNotBound();
+}
  ```
  
 ### Parameters Management
 By using the 'IParameterManager' you can easily create and parse dynamic parameters (or payloads) sent between screens, it has full support to structures and complex objects, that is passed by serializing/deserializing (attention! your object lose the reference, you only send it's values)
+
+```
+public void OnEnter(IDictionary<string, string> parameters)
+{
+    elementPosition = parameterManager.GetParamOfType<float>(parameters, "elementPosition", defaultValue: elementPosition);
+    slider.value = elementPosition;
+}
+
+public IDictionary<string, string> OnExit()
+{
+    var paramPosition = parameterManager.Create("elementPosition", slider.value);
+    var parameters = parameterManager.CreateDictionary(paramPosition);
+    return parameters;
+}
+```
 
 ### Subflows in History
 Subflows allows you to open a new flow and navigate in it (a profile creation, for example), and when it's complete, close the subflow and your navigation keep consistent
@@ -72,20 +87,20 @@ There're examples on how to use both at this Repository, at Assets/Samples
 4 - Create a new class inheriting from BaseAreaInstaller and in the GetScreens method, create your screens registries. Example:
  ```
  [CreateAssetMenu(fileName = "MainMenuScreensInstaller", menuName = "Project/Installers/MainMenuInstaller", order = 0)]
-    public class RealScratchScreensInstaller : BaseScreensInstaller
+public class RealScratchScreensInstaller : BaseScreensInstaller
+{
+    [SerializeField] private GameObject homeScreenPrefab;
+    [SerializeField] private GameObject settingsScreenPrefab;
+
+    public override List<IScreenRegistry> GetScreens()
     {
-        [SerializeField] private GameObject homeScreenPrefab;
-        [SerializeField] private GameObject settingsScreenPrefab;
+        var list = new List<IScreenRegistry>();
+        list.Add(new ScreenRegistry("HomeScreen", typeof(HomeScreenPresenter), homeScreenPrefab));
+        list.Add(new ScreenRegistry("SettingsScreen", typeof(SettingsScreenPresenter), settingsScreenPrefab));
 
-        public override List<IScreenRegistry> GetScreens()
-        {
-            var list = new List<IScreenRegistry>();
-            list.Add(new ScreenRegistry("HomeScreen", typeof(HomeScreenPresenter), homeScreenPrefab));
-            list.Add(new ScreenRegistry("SettingsScreen", typeof(SettingsScreenPresenter), settingsScreenPrefab));
-
-            return list;
-        }
+        return list;
     }
+}
 ```
 5 - Create an instance of it and add to the ScreensInstaller inspector (AreasInstaller). This is meant to separate screens in small installers pieces. \
 ![image](https://user-images.githubusercontent.com/62479476/166112645-5524d0f0-8f54-40f2-82d0-02ac192f9b54.png)
