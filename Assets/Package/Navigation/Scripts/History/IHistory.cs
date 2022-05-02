@@ -19,5 +19,8 @@ namespace Elselam.UnityRouter.History
         /// </summary>
         /// <returns></returns>
         ScreenScheme Back();
+
+        void OpenSubflow();
+        bool CloseSubflow();
     }
 }
