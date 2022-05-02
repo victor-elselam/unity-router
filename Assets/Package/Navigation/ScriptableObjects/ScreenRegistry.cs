@@ -1,3 +1,4 @@
+using Elselam.UnityRouter.Extensions;
 using System;
 using UnityEngine;
 
@@ -8,13 +9,19 @@ namespace Elselam.UnityRouter.Installers
     {
         public ScreenRegistry(string screenId, Type presenterType, GameObject screenPrefab)
         {
-            ScreenId = screenId;
-            ScreenPresenter = presenterType;
-            ScreenPrefab = screenPrefab;
+            this.screenId = screenId;
+            this.screenPresenterName = presenterType.Name;
+            this.screenPrefab = screenPrefab;
         }
 
-        public string ScreenId { get; }
-        public Type ScreenPresenter { get; }
-        public GameObject ScreenPrefab { get; }
+        public string ScreenId => screenId;
+        public Type ScreenPresenter => TypeExtensions.GetTypeByName(screenPresenterName);
+        public GameObject ScreenPrefab => screenPrefab;
+
+
+        [SerializeField] private string screenId;
+        [SerializeField] private UnityEngine.Object screenPresenter;
+        [SerializeField] private GameObject screenPrefab;
+        [SerializeField] private string screenPresenterName;
     }
 }
