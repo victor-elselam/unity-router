@@ -21,10 +21,10 @@ iOS: https://docs.unity3d.com/2021.2/Documentation/Manual/deep-linking-ios.html
     
 
 ### View Transitions
-unity-router can perform customized transitions by extending the ITransition interface in your Transition class, and coding the transition using whatever you want, like DOTween, or Unity API.
+Unity-Router can perform customized transitions by extending the ITransition interface in your Transition class, and coding the transition using whatever you want, like DOTween, or Unity API.
 
 ### Adapt it to your architecture
-unity-router always deals with the 'IScreenPresenter' interface when navigating, including the access for Transforms to perform View Transitions. \
+Unity-Router always deals with the 'IScreenPresenter' interface when navigating, including the access for Transforms to perform View Transitions. \
 In our default setup, the 'IScreenFactory' used to perform the screen creation is the 'DefaultScreenFactory', which presumes that the IScreenPresenter is also the MonoBehaviour of the prefab. \
 However, this is totally extensible by creating your own 'IScreenFactory' and make the relationships between them. For example, a MVP architecture Screen Factory:
  ```
@@ -53,14 +53,18 @@ However, this is totally extensible by creating your own 'IScreenFactory' and ma
  ```
  
 ### Parameters Management
-by using the 'IParameterManager' you can easily create and parse dynamic parameters (or payloads) sent between screens, it has full support to structures and complex objects, that is passed by serializing/deserializing
+By using the 'IParameterManager' you can easily create and parse dynamic parameters (or payloads) sent between screens, it has full support to structures and complex objects, that is passed by serializing/deserializing (attention! your object lose the reference, you only send it's values)
+
+### Subflows in History
+Subflows allows you to open a new flow and navigate in it (a profile creation, for example), and when it's complete, close the subflow and your navigation keep consistent
+![image](https://user-images.githubusercontent.com/62479476/166331078-93d54a41-82e3-4dbe-bfe2-7b1aba7181fc.png)
+
 
 ### Dependency Injection
-this framework was built with Zenject on premise, but you can use with it or not, it's up to you! \
+Unity-Router was built with Zenject on premise, but you can use with it or not, it's up to you! \
 There're examples on how to use both at this Repository, at Assets/Samples
 
 # Get Started (Dependency Injection)
-
 1 - Install the package \
 2 - Create a instance of Navigation Installer, or a new class using your own bindings and add it to your Context (Create/Elselam/UnityRouter/Installers/Navigation) \
 ![image](https://user-images.githubusercontent.com/62479476/166111254-d64d0a41-8c4c-43ad-b9d1-0c6a2ea1f960.png)
@@ -102,7 +106,6 @@ UnityRouter.Navigation.NavigateToDefaultScreen();
 ```
 
 # Samples
-
 ### Sample 1 - Using with Dependency Injection
 ChangeSceneSample - To Test it, just open the 'ChangeSceneSample' scene, hit play, and navigate through the different screens/scenes
 ### Sample 2 - Using without Dependency Injection
@@ -111,9 +114,7 @@ UsageWithoutDependencyInjection - To Test it, just open the 'UsageWithoutDepende
 In both of them, maybe you'll need to add the scenes to the Build Settings. For some reason, Unity keeps changing the AssetID and the reference goes away.
 
 # Expanding
-
 - Support for deep link in the middle of a session (high priority)
-- Support for subflows in History Service
 - Support to use 'On Demand' (Create/Destroy screens when Enter/Exit)
 - Refactor 'Navigation' names to 'UnityRouter' - DONE
 - Add support for an extern logger to give more control of those logs for your system
