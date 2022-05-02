@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 780eefdf2cdc438f96fc81d38480bdfd, type: 3}
-  m_Name: ScreensInstaller
+  m_Script: {fileID: 11500000, guid: 979bb8eab93d4264486b0ea9be0b5e95, type: 3}
+  m_Name: AreaAssetInstaller
   m_EditorClassIdentifier: 
-  areasInstaller:
-  - {fileID: 11400000, guid: db4ccf97ad97a26408d998abf97d722e, type: 2}
+  screens:
+  - {fileID: 11400000, guid: d53428a54e36dde45a727f5f02e8e7e5, type: 2}
+  - {fileID: 11400000, guid: 02912711aea7bf843a80c2566903b557, type: 2}

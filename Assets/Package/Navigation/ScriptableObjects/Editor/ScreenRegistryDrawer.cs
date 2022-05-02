@@ -5,17 +5,17 @@ using UnityEngine;
 
 namespace Elselam.UnityRouter.Installers.Editor
 {
-    //[CustomPropertyDrawer(typeof(ScreenRegistry))]
+    [CustomPropertyDrawer(typeof(ScreenRegistry))]
     public class ScreenRegistryDrawer : PropertyDrawer
     {
-        private const int PropertiesCount = 9;
+        private const int PropertiesCount = 6;
 
         private const string IdProperty = "screenId";
 
-        private const string PresenterProperty = "presenter";
-        private const string PresenterPropertyName = "presenterTypeName";
+        private const string PresenterProperty = "screenPresenter";
+        private const string PresenterPropertyName = "screenPresenterName";
 
-        private const string PrefabProperty = "ScreenPrefab";
+        private const string PrefabProperty = "screenPrefab";
 
         private const float DefaultSpace = 1.5f;
 
@@ -34,7 +34,14 @@ namespace Elselam.UnityRouter.Installers.Editor
             currentSpace += DefaultSpace;
 
             new PropertyNameDrawer(position, property, height, ref currentSpace,
-                PresenterProperty, PresenterPropertyName, "PresenterType", typeof(IScreenPresenter));
+                PresenterProperty, PresenterPropertyName, "PresenterType", typeof(MonoScript));
+
+            currentSpace += DefaultSpace;
+
+            var prefab = property.FindPropertyRelative(PrefabProperty);
+            var prefabRect = new Rect(position.x, GetY(position, height, currentSpace), position.width, height);
+            prefabRect = EditorGUI.PrefixLabel(prefabRect, new GUIContent("Prefab"));
+            prefab.objectReferenceValue = EditorGUI.ObjectField(prefabRect, prefab.objectReferenceValue, typeof(GameObject));
 
             EditorGUI.EndProperty();
         }
