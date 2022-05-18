@@ -37,6 +37,13 @@ namespace Sample.ChangeSceneSample.Screens.ScreenB.Presenter
             slider.value = elementPosition;
         }
 
+        public IDictionary<string, string> OnExit()
+        {
+            var paramPosition = parameterManager.Create("elementPosition", slider.value);
+            var parameters = parameterManager.CreateDictionary(paramPosition);
+            return parameters;
+        }
+
         public void BackToLastScreen()
         {
             navigation.BackToLastScreen();
@@ -52,11 +59,6 @@ namespace Sample.ChangeSceneSample.Screens.ScreenB.Presenter
             elementPosition = position;
         }
 
-        public IDictionary<string, string> OnExit()
-        {
-            var paramPosition = parameterManager.Create("elementPosition", slider.value);
-            var parameters = parameterManager.CreateDictionary(paramPosition);
-            return parameters;
-        }
+        
     }
 }
