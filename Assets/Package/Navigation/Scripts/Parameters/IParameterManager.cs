@@ -20,6 +20,21 @@ namespace Elselam.UnityRouter.Extensions
         IDictionary<string, string> CreateDictionary(params IParameter[] parameters);
 
         /// <summary>
+        /// Create parameters dictionary with object properties (using reflection)
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        IDictionary<string, string> CreateDictionary(object obj);
+
+        /// <summary>
+        /// Convert parameters values in specified type values
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        T ParametersToObject<T>(IDictionary<string, string> parameters);
+
+        /// <summary>
         /// Helper to get desired value with a safe and clean sintax
         /// </summary>
         /// <typeparam name="T"></typeparam>

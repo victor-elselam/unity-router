@@ -72,6 +72,32 @@ namespace Elselam.UnityRouter.Tests
         }
 
         [Test]
+        public void CreateDictionary_FromObject_ReturnDictionaryWithPropertiesParameters()
+        {
+            var obj = new { Test = "test", Count = 2, Valid = true };
+
+            var parameters = parameterManager.CreateDictionary(obj);
+
+            parameters.Count.Should().Be(3);
+            parameters["Test"].Should().Be("test");
+            parameters["Count"].Should().Be("2");
+            parameters["Valid"].Should().Be("true");
+        }
+
+        [Test]
+        public void ParametersToObject_ReturnObjectWithSameValues()
+        {
+            var obj = new TestClass("test", 2, true);
+            var parameters = parameterManager.CreateDictionary(obj);
+
+            var desserialized = parameterManager.ParametersToObject<TestClass>(parameters);
+
+            desserialized.Test.Should().Be("test");
+            desserialized.Count.Should().Be(2);
+            desserialized.Valid.Should().Be(true);
+        }
+
+        [Test]
         public void GetParameterOfType_Valid_ReturnDeserializedParameter()
         {
             var obj = parameterManager.Create("obj", new TestClass("test", 2, true));
@@ -161,6 +187,11 @@ namespace Elselam.UnityRouter.Tests
             public string Test = "test";
             public int Count = 2;
             public bool Valid = true;
+
+            public TestClass()
+            {
+
+            }
 
             public TestClass(string test, int count, bool valid)
             {
