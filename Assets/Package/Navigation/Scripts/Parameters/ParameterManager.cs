@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace Elselam.UnityRouter.Extensions
@@ -16,6 +18,42 @@ namespace Elselam.UnityRouter.Extensions
                 dictio[param.Key] = param.Value;
 
             return dictio;
+        }
+
+        public IDictionary<string, string> CreateDictionary<T>(T obj) where T : class
+        {
+            var members = obj.GetProperties();
+            if (members.IsNullOrEmpty())
+                return new Dictionary<string, string>();
+
+            var parameters = new IParameter[members.Length];
+            for (var i = 0; i < members.Length; i++)
+            {
+                var member = members[i];
+                parameters[i] = Create(member.Name, ((PropertyInfo)member).GetValue(obj));
+            }
+
+            return CreateDictionary(parameters);
+        }
+
+        public T ParametersToObject<T>(IDictionary<string, string> parameters) where T : class
+        {
+            var obj = Activator.CreateInstance<T>();
+            var properties = obj.GetProperties();
+
+            foreach (var param in parameters)
+            {
+                var property = properties.FirstOrDefault(p => p.Name == param.Key);
+                if (property == null)
+                {
+                    Debug.Log($"No property found for parameter: {param.Key}");
+                    continue;
+                }
+
+                ((PropertyInfo) property).SetValue(obj, param.Value);
+            }
+
+            return obj;
         }
 
         public T GetParamOfType<T>(IDictionary<string, string> parameters, string key, T defaultValue = default)
@@ -44,7 +82,5 @@ namespace Elselam.UnityRouter.Extensions
                 return default;
             }
         }
-
-        
     }
 }
