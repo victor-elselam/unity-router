@@ -20,7 +20,7 @@ namespace Elselam.UnityRouter.Extensions
             return dictio;
         }
 
-        public IDictionary<string, string> CreateDictionary(object obj)
+        public IDictionary<string, string> CreateDictionary<T>(T obj) where T : class
         {
             var members = obj.GetProperties();
             if (members.IsNullOrEmpty())
@@ -36,7 +36,7 @@ namespace Elselam.UnityRouter.Extensions
             return CreateDictionary(parameters);
         }
 
-        public T ParametersToObject<T>(IDictionary<string, string> parameters)
+        public T ParametersToObject<T>(IDictionary<string, string> parameters) where T : class
         {
             var obj = Activator.CreateInstance<T>();
             var properties = obj.GetProperties();

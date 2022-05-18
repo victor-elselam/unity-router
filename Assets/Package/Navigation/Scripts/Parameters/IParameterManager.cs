@@ -24,7 +24,7 @@ namespace Elselam.UnityRouter.Extensions
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        IDictionary<string, string> CreateDictionary(object obj);
+        IDictionary<string, string> CreateDictionary<T>(T obj) where T : class;
 
         /// <summary>
         /// Convert parameters values in specified type values
@@ -32,7 +32,7 @@ namespace Elselam.UnityRouter.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="parameters"></param>
         /// <returns></returns>
-        T ParametersToObject<T>(IDictionary<string, string> parameters);
+        T ParametersToObject<T>(IDictionary<string, string> parameters) where T : class;
 
         /// <summary>
         /// Helper to get desired value with a safe and clean sintax
