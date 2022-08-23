@@ -3,8 +3,6 @@ name: Add Tag
 on:
   pull_request:
     branches: [ main ]
-    types:
-      - opened
 
 jobs:
   release:
