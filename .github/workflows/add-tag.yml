@@ -1,0 +1,69 @@
+name: Add Tag
+
+on:
+  pull_request:
+    branches: [ main ]
+    types:
+      - opened
+
+jobs:
+  release:
+    name: Preparing Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get Last Release
+        id: last_release
+        uses: InsonusK/get-latest-release@v1.0.1
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+          exclude_types: "draft|prerelease"
+          view_top: 1
+      - name: Print Release
+        run: |
+          echo $steps.last_release.outputs.tag_name
+      - name: Get PR labels
+        id: pr-labels
+        uses: joerick/pr-labels-action@v1.0.6
+      - name: Print Labels
+        run: |
+          echo $steps.pr-labels.outputs.labels
+      - name: Create Major Version
+        if: contains(steps.pr-labels.outputs.labels, ' major ')
+        run: |
+          versions=steps.last_release.outputs.tag_name
+          echo $versions
+          parts=(${(@s:.:)versions})
+          echo $parts
+          major=$parts[1]
+          major=$major[2,2]
+          newMajor="$(($major + 1))"
+          echo $newMajor
+          newTag=v${newMajor}.${parts[2]}.${parts[3]}
+          echo $newTag
+          git tag ${{ newTag }} {{ $GITHUB_SHA }}
+      - name: Create Minor Version
+        if: contains(steps.pr-labels.outputs.labels, ' minor ')
+        run: |
+          versions=steps.last_release.outputs.tag_name
+          echo $versions
+          parts=(${(@s:.:)versions})
+          echo $parts
+          newMinor="$(($parts[3] + 1))"
+          echo $newMinor
+          newTag=${parts[1]}.${newMinor}.${parts[3]}
+          echo $newTag
+          git tag ${{ newTag }} {{ $GITHUB_SHA }}
+      - name: Create Patch Version
+        if: contains(steps.pr-labels.outputs.labels, ' patch ')
+        run: |
+          versions=steps.last_release.outputs.tag_name
+          echo $versions
+          parts=(${(@s:.:)versions})
+          echo $parts
+          newPatch="$(($parts[3] + 1))"
+          echo $newPatch
+          newTag=${parts[1]}.${parts[2]}.${newPatch}
+          echo $newTag
+          git tag ${{ newTag }} {{ $GITHUB_SHA }}
