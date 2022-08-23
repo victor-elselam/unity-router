@@ -42,7 +42,6 @@ jobs:
           echo $newMajor
           newTag=v${newMajor}.${parts[2]}.${parts[3]}
           echo $newTag
-          git tag ${{ newTag }} {{ $GITHUB_SHA }}
       - name: Create Minor Version
         if: contains(steps.pr-labels.outputs.labels, ' minor ')
         run: |
@@ -54,7 +53,6 @@ jobs:
           echo $newMinor
           newTag=${parts[1]}.${newMinor}.${parts[3]}
           echo $newTag
-          git tag ${{ newTag }} {{ $GITHUB_SHA }}
       - name: Create Patch Version
         if: contains(steps.pr-labels.outputs.labels, ' patch ')
         run: |
@@ -66,4 +64,3 @@ jobs:
           echo $newPatch
           newTag=${parts[1]}.${parts[2]}.${newPatch}
           echo $newTag
-          git tag ${{ newTag }} {{ $GITHUB_SHA }}
