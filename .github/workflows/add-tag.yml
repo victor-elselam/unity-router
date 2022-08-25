@@ -43,7 +43,6 @@ jobs:
       - name: Create Minor Version
         if: |
           contains(steps.pr-labels.outputs.labels, ' minor ')
-          !contains(steps.pr-labels.outputs.labels, ' major ')
         run: |
           versions=${{ steps.last_release.outputs.tag_name }}
           echo $versions
@@ -56,8 +55,6 @@ jobs:
       - name: Create Patch Version
         if: |
           contains(steps.pr-labels.outputs.labels, ' patch ')
-          !contains(steps.pr-labels.outputs.labels, ' minor ')
-          !contains(steps.pr-labels.outputs.labels, ' major ')
         run: |
           versions=${{ steps.last_release.outputs.tag_name }}
           echo $versions
