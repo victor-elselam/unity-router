@@ -28,38 +28,41 @@ jobs:
         run: |
           echo ${{ steps.pr-labels.outputs.labels }}
       - name: Create Major Version
-        if: contains(steps.pr-labels.outputs.labels, ' major ')
+        shell: sh
+        if: |
+          contains(steps.pr-labels.outputs.labels, ' major ')
         run: |
           versions=${{ steps.last_release.outputs.tag_name }}
           echo $versions
-          IFS='.' read -r -a parts <<< "$versions"
+          parts=(${(@s:.:)$versions})
           echo $parts
-          major=$parts[0]
+          major=$parts[1]
           major=$major[2,2]
           newMajor="$(($major + 1))"
           echo $newMajor
-          newTag=v${newMajor}.${parts[1]}.${parts[2]}
+          newTag=v${newMajor}.${parts[2]}.${parts[3]}
           echo $newTag
       - name: Create Minor Version
+        shell: sh
         if: |
           contains(steps.pr-labels.outputs.labels, ' minor ')
         run: |
           versions=${{ steps.last_release.outputs.tag_name }}
           echo $versions
-          IFS='.' read -r -a parts <<< $versions
-          echo $parts[0]
-          echo $parts[1]
-          newMinor=$(($parts[1] + 1))
+          parts=(${(@s:.:)$versions})
+          echo $parts
+          newMinor="$(($parts[3] + 1))"
           echo $newMinor
-          newTag=${parts[0]}.${newMinor}.${parts[2]}
+          newTag=${parts[1]}.${newMinor}.${parts[3]}
           echo $newTag
       - name: Create Patch Version
+        shell: sh
         if: |
           contains(steps.pr-labels.outputs.labels, ' patch ')
         run: |
           versions=${{ steps.last_release.outputs.tag_name }}
           echo $versions
-          IFS='.' read -r -a parts <<< "$versions"
+          parts=(${(@s:.:)$versions})
           echo $parts
           newPatch="$(($parts[3] + 1))"
           echo $newPatch
