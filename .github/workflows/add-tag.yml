@@ -30,7 +30,7 @@ jobs:
       - name: Create Major Version
         if: contains(steps.pr-labels.outputs.labels, ' major ')
         run: |
-          #!/bin/bash
+          #!/bin/zsh
           versions=steps.last_release.outputs.tag_name
           echo $versions
           parts=(${(@s:.:)versions})
@@ -44,7 +44,7 @@ jobs:
       - name: Create Minor Version
         if: contains(steps.pr-labels.outputs.labels, ' minor ')
         run: |
-          #!/bin/bash
+          #!/bin/zsh
           versions=steps.last_release.outputs.tag_name
           echo $versions
           parts=(${(@s:.:)versions})
@@ -56,7 +56,7 @@ jobs:
       - name: Create Patch Version
         if: contains(steps.pr-labels.outputs.labels, ' patch ')
         run: |
-          #!/bin/bash
+          #!/bin/zsh
           versions=steps.last_release.outputs.tag_name
           echo $versions
           parts=(${(@s:.:)versions})
