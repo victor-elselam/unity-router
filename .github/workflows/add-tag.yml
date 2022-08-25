@@ -32,7 +32,7 @@ jobs:
         run: |
           versions=${{ steps.last_release.outputs.tag_name }}
           echo $versions
-          parts=(${(@s:.:)versions})
+          parts=(${(@s:.:)$versions})
           echo $parts
           major=$parts[1]
           major=$major[2,2]
@@ -45,7 +45,7 @@ jobs:
         run: |
           versions=${{ steps.last_release.outputs.tag_name }}
           echo $versions
-          parts=(${(@s:.:)versions})
+          parts=(${(@s:.:)$versions})
           echo $parts
           newMinor="$(($parts[3] + 1))"
           echo $newMinor
@@ -56,7 +56,7 @@ jobs:
         run: |
           versions=${{ steps.last_release.outputs.tag_name }}
           echo $versions
-          parts=(${(@s:.:)versions})
+          parts=(${(@s:.:)$versions})
           echo $parts
           newPatch="$(($parts[3] + 1))"
           echo $newPatch
