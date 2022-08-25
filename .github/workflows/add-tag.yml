@@ -35,7 +35,7 @@ jobs:
           parts=(${versions//./ })
           major=${parts[0]}
           major=$major[1,1]
-          newMajor="$(($major + 1))"
+          newMajor=$(($major + 1))
           newTag=v${newMajor}.${parts[2]}.${parts[3]}
           echo new tag: $newTag
           git tag -a ${{ newTag }} ${{ github.sha }}
@@ -46,7 +46,7 @@ jobs:
         run: |
           versions=${{ steps.last_release.outputs.tag_name }}
           parts=(${versions//./ })
-          newMinor="$((${parts[1]} + 1))"
+          newMinor=$((${parts[1]} + 1))
           newTag=${parts[0]}.${newMinor}.${parts[2]}
           echo new tag: $newTag
           git tag -a ${{ newTag }} ${{ github.sha }}
@@ -57,7 +57,7 @@ jobs:
         run: |
           versions=${{ steps.last_release.outputs.tag_name }}
           parts=(${versions//./ })
-          newPatch="$((${parts[2]} + 1))"
+          newPatch=$((${parts[2]} + 1))
           newTag=${parts[0]}.${parts[1]}.${newPatch}
           echo new tag: $newTag
           git tag -a ${{ newTag }} ${{ github.sha }}
