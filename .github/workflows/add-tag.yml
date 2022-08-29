@@ -1,0 +1,63 @@
+name: Add Tag
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  release:
+    name: Preparing Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Git User
+        run: |
+          git config --global user.email "realscrap@bot.com"
+          git config --global user.name "RealScrap Bot"
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Get Last Release
+        id: last_release
+        uses: InsonusK/get-latest-release@v1.0.1
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+          exclude_types: "draft|prerelease"
+          view_top: 1
+      - name: Print Release
+        run: |
+          echo ${{ steps.last_release.outputs.tag_name }}
+      - name: Get PR labels
+        id: pr-labels
+        uses: joerick/pr-labels-action@v1.0.6
+      - name: Print Labels
+        run: |
+          echo ${{ steps.pr-labels.outputs.labels }}
+      - name: Create Major Version
+        if: |
+          contains(steps.pr-labels.outputs.labels, ' major ')
+        run: |
+          versions=${{ steps.last_release.outputs.tag_name }}
+          parts=(${versions//./ })
+          newMajor=$((${parts[0]} + 1))
+          value=${newMajor}.${parts[1]}.${parts[2]}
+          git tag -a $value ${{ github.sha }} -m "add tag $value"
+          git push --tags
+      - name: Create Minor Version
+        if: |
+          contains(steps.pr-labels.outputs.labels, ' minor ')
+        run: |
+          versions=${{ steps.last_release.outputs.tag_name }}
+          parts=(${versions//./ })
+          newMinor=$((${parts[1]} + 1))
+          value=${parts[0]}.${newMinor}.${parts[2]}
+          git tag -a $value ${{ github.sha }} -m "add tag $value"
+          git push --tags
+      - name: Create Patch Version
+        if: |
+          contains(steps.pr-labels.outputs.labels, ' patch ')
+        run: |
+          versions=${{ steps.last_release.outputs.tag_name }}
+          parts=(${versions//./ })
+          newPatch=$((${parts[2]} + 1))
+          value=${parts[0]}.${parts[1]}.${newPatch}
+          git tag -a $value ${{ github.sha }} -m "add tag $value"
+          git push --tags
