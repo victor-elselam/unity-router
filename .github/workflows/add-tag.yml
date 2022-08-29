@@ -33,12 +33,10 @@ jobs:
         run: |
           versions=${{ steps.last_release.outputs.tag_name }}
           parts=(${versions//./ })
-          major=${parts[0]}
-          major=$major[1,1]
-          newMajor=$(($major + 1))
-          newTag=v${newMajor}.${parts[2]}.${parts[3]}
-          echo new tag: $newTag
-          git tag -a ${{ newTag }} ${{ github.sha }}
+          newMajor=$((${parts[0]} + 1))
+          tag=${newMajor}.${parts[1]}.${parts[2]}
+          echo new tag: $tag
+          git tag -a ${{ tag }} ${{ github.sha }}
           git push --tags
       - name: Create Minor Version
         if: |
@@ -47,9 +45,9 @@ jobs:
           versions=${{ steps.last_release.outputs.tag_name }}
           parts=(${versions//./ })
           newMinor=$((${parts[1]} + 1))
-          newTag=${parts[0]}.${newMinor}.${parts[2]}
-          echo new tag: $newTag
-          git tag -a ${{ newTag }} ${{ github.sha }}
+          tag=${parts[0]}.${newMinor}.${parts[2]}
+          echo new tag: $tag
+          git tag -a ${{ tag }} ${{ github.sha }}
           git push --tags
       - name: Create Patch Version
         if: |
@@ -58,7 +56,7 @@ jobs:
           versions=${{ steps.last_release.outputs.tag_name }}
           parts=(${versions//./ })
           newPatch=$((${parts[2]} + 1))
-          newTag=${parts[0]}.${parts[1]}.${newPatch}
-          echo new tag: $newTag
-          git tag -a ${{ newTag }} ${{ github.sha }}
+          tag=${parts[0]}.${parts[1]}.${newPatch}
+          echo new tag: $tag
+          git tag -a ${{ tag }} ${{ github.sha }}
           git push --tags
