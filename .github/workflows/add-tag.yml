@@ -9,6 +9,10 @@ jobs:
     name: Preparing Release
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Git User
+        run: |
+          git config --global user.email "realscrap@bot.com"
+          git config --global user.name "RealScrap Bot"
       - name: Checkout
         uses: actions/checkout@v2
       - name: Get Last Release
