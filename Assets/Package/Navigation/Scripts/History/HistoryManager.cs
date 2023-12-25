@@ -24,7 +24,7 @@ namespace Elselam.UnityRouter.History
         public bool Add(ScreenScheme screenScheme)
         {
             if (screenScheme == null)
-                return false;
+                return true;
 
             currentFlow.Push(screenScheme);
             return true;
